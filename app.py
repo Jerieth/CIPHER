@@ -22,9 +22,12 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    time.sleep(1)  # Short delay before greeting
-    greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
-    emit('receive_message', {'message': greeting, 'nickname': 'EVA'})
+    def send_delayed_greeting():
+        time.sleep(5)  # 5-second delay
+        greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
+        emit('receive_message', {'message': greeting, 'nickname': 'EVA'})
+
+    socketio.start_background_task(send_delayed_greeting)
 
 @socketio.on('send_message')
 def handle_message(data):

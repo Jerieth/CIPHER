@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const evaStatus = document.getElementById('eva-status');
     const changeUserBtn = document.getElementById('change-user-btn');
     const restartChatBtn = document.getElementById('restart-chat-btn');
+    const sendButton = messageForm.querySelector('button[type="submit"]');
 
     let typingTimer;
     const doneTypingInterval = 1000;
@@ -15,9 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const inactivityTimeout = 5 * 60 * 1000; // 5 minutes
     let isUsernameLocked = false;
 
+    function handleInitialDelay() {
+        updateEvaStatus(false);
+        messageInput.disabled = true;
+        sendButton.disabled = true;
+        nicknameInput.disabled = true;
+        changeUserBtn.disabled = true;
+
+        setTimeout(() => {
+            updateEvaStatus(true);
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+            nicknameInput.disabled = false;
+            changeUserBtn.disabled = false;
+        }, 5000);
+    }
+
     socket.on('connect', () => {
         console.log('Connected to server');
-        updateEvaStatus(true);
+        handleInitialDelay();
     });
 
     function updateEvaStatus(isOnline) {
