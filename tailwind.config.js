@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'deep-space': '#0B3D91',
-        'cosmic-blue': '#1E2761',
+        'deep-space': '#1E4CAD',
+        'cosmic-blue': '#2A3A7E',
         'neon-cyan': '#08F7FE',
         'neon-pink': '#FF2A6D',
         'star-white': '#FFFFFF',
-        'chat-bg': '#FFFFFF',
+        'chat-bg': '#F0F0F0',
       },
       fontFamily: {
         'orbitron': ['Orbitron', 'sans-serif'],
