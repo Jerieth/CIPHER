@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (messageInput.value.trim() && nicknameInput.value.trim()) {
             socket.emit('send_message', { message: messageInput.value, nickname: nicknameInput.value });
             messageInput.value = '';
-            socket.emit('stop_typing', { nickname: nicknameInput.value });
         }
     });
 
@@ -26,18 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             messageForm.dispatchEvent(new Event('submit'));
-        }
-    });
-
-    messageInput.addEventListener('input', () => {
-        clearTimeout(typingTimer);
-        if (messageInput.value && nicknameInput.value.trim()) {
-            socket.emit('typing', { nickname: nicknameInput.value });
-            typingTimer = setTimeout(() => {
-                socket.emit('stop_typing', { nickname: nicknameInput.value });
-            }, doneTypingInterval);
-        } else {
-            socket.emit('stop_typing', { nickname: nicknameInput.value });
         }
     });
 
@@ -50,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageTextElement = document.createElement('span');
         messageTextElement.textContent = data.message;
         messageElement.appendChild(messageTextElement);
-        messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-center text-lg';
+        messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-center text-base';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
@@ -58,14 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('user_typing', (data) => {
         if (data.nickname === 'EVA') {
             typingIndicator.textContent = 'EVA is typing...';
-        } else {
-            typingIndicator.textContent = `${data.nickname} is typing...`;
+            typingIndicator.classList.remove('hidden');
         }
-        typingIndicator.classList.remove('hidden');
     });
 
     socket.on('user_stop_typing', (data) => {
-        typingIndicator.textContent = '';
-        typingIndicator.classList.add('hidden');
+        if (data.nickname === 'EVA') {
+            typingIndicator.textContent = '';
+            typingIndicator.classList.add('hidden');
+        }
     });
 });

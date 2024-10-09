@@ -42,13 +42,5 @@ def send_eva_response(user_name):
     socketio.emit('user_stop_typing', {'nickname': 'EVA'})
     socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'})
 
-@socketio.on('typing')
-def handle_typing(data):
-    emit('user_typing', {'nickname': data['nickname']}, broadcast=True)
-
-@socketio.on('stop_typing')
-def handle_stop_typing(data):
-    emit('user_stop_typing', {'nickname': data['nickname']}, broadcast=True)
-
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
