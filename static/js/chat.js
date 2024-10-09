@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let typingTimer;
     const doneTypingInterval = 1000;
 
+    socket.on('connect', () => {
+        console.log('Connected to server');
+        // You can add any client-side initialization here if needed
+    });
+
     messageForm.addEventListener('submit', (e) => {
         e.preventDefault();
         if (messageInput.value.trim() && nicknameInput.value.trim()) {
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageTextElement = document.createElement('span');
         messageTextElement.textContent = data.message;
         messageElement.appendChild(messageTextElement);
-        messageElement.className = 'mb-2 p-2 bg-gray-200 rounded flex items-center';
+        messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-center';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
