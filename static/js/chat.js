@@ -22,6 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            messageForm.dispatchEvent(new Event('submit'));
+        }
+    });
+
     messageInput.addEventListener('input', () => {
         clearTimeout(typingTimer);
         if (messageInput.value && nicknameInput.value.trim()) {
@@ -43,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageTextElement = document.createElement('span');
         messageTextElement.textContent = data.message;
         messageElement.appendChild(messageTextElement);
-        messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-center';
+        messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-center text-lg';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
