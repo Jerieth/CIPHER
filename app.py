@@ -68,7 +68,10 @@ def send_eva_response(user_name, user_message):
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
     lower_message = user_message.lower()
-    if "self-aware" in lower_message or "self aware" in lower_message:
+
+    if any(greeting in lower_message for greeting in ['hello', 'hi', 'hey', 'greetings']):
+        eva_message = "Hello, I am EVA your ship's AI."
+    elif "self-aware" in lower_message or "self aware" in lower_message:
         eva_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
     elif lower_message == "yes" and "self aware" in socketio.last_question.lower():
         eva_message = "Interesting..."
