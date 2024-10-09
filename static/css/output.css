@@ -602,16 +602,12 @@ video {
   height: 100vh;
 }
 
-.w-11\/12 {
-  width: 91.666667%;
-}
-
 .w-full {
   width: 100%;
 }
 
-.max-w-3xl {
-  max-width: 52rem;
+.max-w-4xl {
+  max-width: 65rem;
 }
 
 .max-w-\[90\%\] {

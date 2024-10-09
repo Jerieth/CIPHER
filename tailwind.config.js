@@ -26,6 +26,7 @@ module.exports = {
       maxWidth: {
         '2xl': '42rem',
         '3xl': '52rem',
+        '4xl': '65rem', // This is 25% larger than the previous '3xl' (52rem)
         '90%': '90%',
       },
     },
