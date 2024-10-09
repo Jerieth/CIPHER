@@ -29,7 +29,10 @@
 </head>
 <body class="bg-deep-space text-star-white font-orbitron h-screen flex items-center justify-center">
     <div class="w-full max-w-4xl bg-cosmic-blue rounded-lg shadow-lg p-6 chat-container">
-        <h1 class="text-xl font-bold mb-4 text-center text-neon-cyan animate-pulse-slow">EVA <span id="eva-status" class="status-indicator status-online"></span></h1>
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-xl font-bold text-neon-cyan animate-pulse-slow">EVA <span id="eva-status" class="status-indicator status-online"></span></h1>
+            <button id="restart-chat-btn" class="bg-neon-cyan text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300">Restart Chat</button>
+        </div>
         <div id="typing-indicator" class="text-xs text-neon-cyan mb-2 h-6"></div>
         <div id="chat-messages" class="h-180 w-full overflow-y-auto mb-4 p-2 border border-neon-pink rounded bg-white text-black text-xs"></div>
         <div class="flex items-center mb-2">
@@ -40,7 +43,6 @@
             <textarea id="message-input" class="flex-grow bg-deep-space border border-neon-cyan rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink h-20 resize-none text-xs w-full" placeholder="Type your message..."></textarea>
             <button type="submit" class="bg-neon-pink text-star-white px-4 py-2 rounded-r hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors duration-300 text-xs">Send</button>
         </form>
-        <button id="restart-chat-btn" class="mt-2 w-full bg-neon-cyan text-deep-space px-4 py-2 rounded hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300 text-xs">Restart Chat</button>
     </div>
     <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
