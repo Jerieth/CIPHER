@@ -1,5 +1,5 @@
 import subprocess
-from app import app
+from app import app, socketio
 
 def build_css():
     try:
@@ -10,4 +10,4 @@ def build_css():
 
 if __name__ == "__main__":
     build_css()
-    app.run(host="0.0.0.0", port=5000)
+    socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
