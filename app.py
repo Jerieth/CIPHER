@@ -30,17 +30,22 @@ def handle_connect():
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    emit('receive_message', {'message': message, 'nickname': nickname})
+    emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
     # Delayed EVA response
     socketio.start_background_task(send_eva_response, nickname)
+
+@socketio.on('restart_chat')
+def handle_restart_chat():
+    greeting = "Chat restarted. Hello, I am EVA your ship's AI. May I ask your name?"
+    emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
 
 def send_eva_response(user_name):
     socketio.emit('user_typing', {'nickname': 'EVA'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     eva_message = random.choice(EVA_RESPONSES).format(user_name)
     socketio.emit('user_stop_typing', {'nickname': 'EVA'})
-    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'})
+    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)

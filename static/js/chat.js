@@ -6,11 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const nicknameInput = document.getElementById('nickname-input');
     const typingIndicator = document.getElementById('typing-indicator');
     const evaStatus = document.getElementById('eva-status');
+    const changeUserBtn = document.getElementById('change-user-btn');
+    const restartChatBtn = document.getElementById('restart-chat-btn');
 
     let typingTimer;
     const doneTypingInterval = 1000;
     let inactivityTimer;
     const inactivityTimeout = 5 * 60 * 1000; // 5 minutes
+    let isUsernameLocked = false;
 
     socket.on('connect', () => {
         console.log('Connected to server');
@@ -34,9 +37,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }, inactivityTimeout);
     }
 
+    function lockUsername() {
+        isUsernameLocked = true;
+        nicknameInput.disabled = true;
+        changeUserBtn.textContent = 'Change User';
+    }
+
+    function unlockUsername() {
+        isUsernameLocked = false;
+        nicknameInput.disabled = false;
+        changeUserBtn.textContent = 'Lock Username';
+    }
+
     messageForm.addEventListener('submit', (e) => {
         e.preventDefault();
         if (messageInput.value.trim() && nicknameInput.value.trim()) {
+            if (!isUsernameLocked) {
+                lockUsername();
+            }
             socket.emit('send_message', { message: messageInput.value, nickname: nicknameInput.value });
             messageInput.value = '';
             resetInactivityTimer();
@@ -49,6 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
             messageForm.dispatchEvent(new Event('submit'));
         }
         resetInactivityTimer();
+    });
+
+    changeUserBtn.addEventListener('click', () => {
+        if (isUsernameLocked) {
+            unlockUsername();
+        } else {
+            lockUsername();
+        }
+    });
+
+    restartChatBtn.addEventListener('click', () => {
+        chatMessages.innerHTML = '';
+        unlockUsername();
+        nicknameInput.value = '';
+        messageInput.value = '';
+        socket.emit('restart_chat');
     });
 
     socket.on('receive_message', (data) => {
