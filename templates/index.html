@@ -8,36 +8,28 @@
     <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .starry-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000000;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-                radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-            animation: twinkle 10s ease-in-out infinite alternate;
-            z-index: -1;
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
         .chat-container {
             position: relative;
             z-index: 1;
         }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .status-online {
+            background-color: #00ff00;
+        }
+        .status-offline {
+            background-color: #ff0000;
+        }
     </style>
 </head>
-<body class="bg-deep-space text-star-white font-orbitron h-screen flex items-center justify-center starry-bg">
+<body class="bg-deep-space text-star-white font-orbitron h-screen flex items-center justify-center">
     <div class="w-full max-w-4xl bg-cosmic-blue rounded-lg shadow-lg p-6 chat-container">
-        <h1 class="text-xl font-bold mb-4 text-center text-neon-cyan animate-pulse-slow">EVA</h1>
+        <h1 class="text-xl font-bold mb-4 text-center text-neon-cyan animate-pulse-slow">EVA <span id="eva-status" class="status-indicator status-online"></span></h1>
         <div id="typing-indicator" class="text-xs text-neon-cyan mb-2 h-6"></div>
         <div id="chat-messages" class="h-180 w-full overflow-y-auto mb-4 p-2 border border-neon-pink rounded bg-white text-black text-xs"></div>
         <input type="text" id="nickname-input" class="w-full bg-deep-space border border-neon-cyan rounded px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-neon-pink text-xs" placeholder="Enter your nickname">
