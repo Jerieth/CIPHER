@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendButton.disabled = false;
             nicknameInput.disabled = false;
             changeUserBtn.disabled = false;
+            socket.emit('eva_online');
         }, 5000);
     }
 
