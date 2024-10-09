@@ -10,6 +10,7 @@ socketio = SocketIO(app)
 
 who_are_you_count = 0
 socketio.last_question = ""
+greeting_sent = False
 
 EVA_RESPONSES = [
     "That's interesting, {}! Could you tell me more about that?",
@@ -43,8 +44,9 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
-    global who_are_you_count
+    global who_are_you_count, greeting_sent
     who_are_you_count = 0
+    greeting_sent = False
     socketio.last_question = ""
     emit('clear_chat', broadcast=True)
     send_eva_greeting()
@@ -54,8 +56,11 @@ def handle_request_eva_greeting():
     send_eva_greeting()
 
 def send_eva_greeting():
-    greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
-    emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
+    global greeting_sent
+    if not greeting_sent:
+        greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
+        emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
+        greeting_sent = True
 
 def send_eva_response(user_name, user_message):
     global who_are_you_count
