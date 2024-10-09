@@ -36,7 +36,7 @@ def handle_message(data):
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
     # Delayed EVA response
-    socketio.start_background_task(send_eva_response, nickname)
+    socketio.start_background_task(send_eva_response, nickname, message)
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
@@ -51,10 +51,17 @@ def send_eva_greeting():
     greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
     emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
 
-def send_eva_response(user_name):
+def send_eva_response(user_name, user_message):
     socketio.emit('user_typing', {'nickname': 'EVA'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
-    eva_message = random.choice(EVA_RESPONSES).format(user_name)
+    
+    # Check for specific questions
+    lower_message = user_message.lower()
+    if "what are you" in lower_message or "who are you" in lower_message:
+        eva_message = "I am an artificial intelligence device created by MAG systems. I work independently and can adapt to control the functions for any ship or MAG device."
+    else:
+        eva_message = random.choice(EVA_RESPONSES).format(user_name)
+    
     socketio.emit('user_stop_typing', {'nickname': 'EVA'})
     socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, broadcast=True)
 

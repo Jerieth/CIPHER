@@ -102,6 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartChatBtn.addEventListener('click', () => {
         socket.emit('restart_chat');
+        chatMessages.innerHTML = '';
+        unlockUsername();
+        nicknameInput.value = '';
+        messageInput.value = '';
         handleInitialDelay();
     });
 
