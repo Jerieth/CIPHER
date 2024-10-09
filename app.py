@@ -27,8 +27,7 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
-    emit('receive_message', {'message': greeting, 'nickname': 'EVA'})
+    pass
 
 @socketio.on('send_message')
 def handle_message(data):
@@ -41,12 +40,14 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
-    greeting = "Chat restarted. Hello, I am EVA your ship's AI. May I ask your name?"
     emit('clear_chat', broadcast=True)
-    emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
+    send_eva_greeting()
 
-@socketio.on('eva_online')
-def handle_eva_online():
+@socketio.on('request_eva_greeting')
+def handle_request_eva_greeting():
+    send_eva_greeting()
+
+def send_eva_greeting():
     greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
     emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
 
