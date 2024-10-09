@@ -23,6 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
         nicknameInput.disabled = true;
         changeUserBtn.disabled = true;
 
+        const offlineMessage = document.createElement('div');
+        offlineMessage.id = 'eva-offline-message';
+        offlineMessage.textContent = 'EVA powering on. Please Stand By.';
+        offlineMessage.className = 'text-neon-cyan text-center my-4';
+        chatMessages.appendChild(offlineMessage);
+
         setTimeout(() => {
             updateEvaStatus(true);
             messageInput.disabled = false;
@@ -30,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nicknameInput.disabled = false;
             changeUserBtn.disabled = false;
             socket.emit('request_eva_greeting');
+            const offlineMsg = document.getElementById('eva-offline-message');
+            if (offlineMsg) offlineMsg.remove();
         }, 5000);
     }
 
@@ -94,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartChatBtn.addEventListener('click', () => {
         socket.emit('restart_chat');
+        handleInitialDelay();
     });
 
     socket.on('clear_chat', () => {
