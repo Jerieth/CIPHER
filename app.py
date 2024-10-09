@@ -14,8 +14,9 @@ def index():
 @socketio.on('send_message')
 def handle_message(data):
     message = data['message']
+    nickname = data['nickname']
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    emit('receive_message', {'message': message, 'timestamp': timestamp}, broadcast=True)
+    emit('receive_message', {'message': message, 'nickname': nickname, 'timestamp': timestamp}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
