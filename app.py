@@ -42,6 +42,7 @@ def handle_message(data):
 @socketio.on('restart_chat')
 def handle_restart_chat():
     greeting = "Chat restarted. Hello, I am EVA your ship's AI. May I ask your name?"
+    emit('clear_chat', broadcast=True)
     emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
 
 @socketio.on('eva_online')

@@ -96,11 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     restartChatBtn.addEventListener('click', () => {
+        socket.emit('restart_chat');
+    });
+
+    socket.on('clear_chat', () => {
         chatMessages.innerHTML = '';
         unlockUsername();
         nicknameInput.value = '';
         messageInput.value = '';
-        socket.emit('restart_chat');
+        updateEvaStatus(true);
+        resetInactivityTimer();
     });
 
     socket.on('receive_message', (data) => {
