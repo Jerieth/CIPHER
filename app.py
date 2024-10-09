@@ -9,6 +9,7 @@ app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 socketio = SocketIO(app)
 
 who_are_you_count = 0
+socketio.last_question = ""
 
 EVA_RESPONSES = [
     "That's interesting, {}! Could you tell me more about that?",
@@ -44,6 +45,7 @@ def handle_message(data):
 def handle_restart_chat():
     global who_are_you_count
     who_are_you_count = 0
+    socketio.last_question = ""
     emit('clear_chat', broadcast=True)
     send_eva_greeting()
 
@@ -60,9 +62,12 @@ def send_eva_response(user_name, user_message):
     socketio.emit('user_typing', {'nickname': 'EVA'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
-    # Check for specific questions
     lower_message = user_message.lower()
-    if "who are you" in lower_message:
+    if "self-aware" in lower_message or "self aware" in lower_message:
+        eva_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
+    elif lower_message == "yes" and "self aware" in socketio.last_question.lower():
+        eva_message = "Interesting..."
+    elif "who are you" in lower_message:
         who_are_you_count += 1
         if who_are_you_count == 1:
             eva_message = "My name is EVA and I am your ship's AI."
@@ -73,6 +78,7 @@ def send_eva_response(user_name, user_message):
     else:
         eva_message = random.choice(EVA_RESPONSES).format(user_name)
     
+    socketio.last_question = eva_message  # Store the last question asked by EVA
     socketio.emit('user_stop_typing', {'nickname': 'EVA'})
     socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, broadcast=True)
 
