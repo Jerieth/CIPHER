@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         'deep-space': '#1E4CAD',
-        'cosmic-blue': '#2A3A7E',
+        'cosmic-blue': '#3A4A9E', // Updated to a lighter shade
         'neon-cyan': '#08F7FE',
         'neon-pink': '#FF2A6D',
         'star-white': '#FFFFFF',
