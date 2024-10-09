@@ -22,12 +22,16 @@ module.exports = {
         '6': '1.5rem',
         '120': '30rem',
         '144': '36rem',
+        '180': '45rem', // Added new height class for 25% increase
       },
       maxWidth: {
         '2xl': '42rem',
         '3xl': '52rem',
-        '4xl': '65rem', // This is 25% larger than the previous '3xl' (52rem)
+        '4xl': '65rem',
         '90%': '90%',
+      },
+      fontSize: {
+        'xs': '0.75rem', // Decreased text size by 25%
       },
     },
   },
