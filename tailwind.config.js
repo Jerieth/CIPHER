@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'deep-space': '#1E4CAD',
-        'cosmic-blue': '#3A4A9E', // Updated to a lighter shade
+        'deep-space': '#000000',
+        'cosmic-blue': '#3A4A9E',
         'neon-cyan': '#08F7FE',
         'neon-pink': '#FF2A6D',
         'star-white': '#FFFFFF',
@@ -22,7 +22,7 @@ module.exports = {
         '6': '1.5rem',
         '120': '30rem',
         '144': '36rem',
-        '180': '45rem', // Added new height class for 25% increase
+        '180': '45rem',
       },
       maxWidth: {
         '2xl': '42rem',
@@ -31,7 +31,7 @@ module.exports = {
         '90%': '90%',
       },
       fontSize: {
-        'xs': '0.75rem', // Decreased text size by 25%
+        'xs': '0.75rem',
       },
     },
   },
