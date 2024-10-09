@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const changeUserBtn = document.getElementById('change-user-btn');
     const restartChatBtn = document.getElementById('restart-chat-btn');
     const sendButton = messageForm.querySelector('button[type="submit"]');
+    const usernameDisplay = document.getElementById('username-display');
 
     let typingTimer;
     const doneTypingInterval = 1000;
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const offlineMessage = document.createElement('div');
         offlineMessage.id = 'eva-offline-message';
         offlineMessage.textContent = 'EVA powering on. Please Stand By.';
-        offlineMessage.className = 'text-red-500 text-center my-4 text-2xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10';
+        offlineMessage.className = 'text-red-500 text-center my-4 text-3xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10';
         chatMessages.appendChild(offlineMessage);
 
         setTimeout(() => {
@@ -65,14 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function lockUsername() {
         isUsernameLocked = true;
-        nicknameInput.disabled = true;
+        usernameDisplay.textContent = nicknameInput.value;
+        usernameDisplay.classList.remove('hidden');
+        nicknameInput.classList.add('hidden');
         changeUserBtn.textContent = 'Change User';
         changeUserBtn.classList.remove('hidden');
     }
 
     function unlockUsername() {
         isUsernameLocked = false;
-        nicknameInput.disabled = false;
+        usernameDisplay.classList.add('hidden');
+        nicknameInput.classList.remove('hidden');
+        nicknameInput.value = '';
         changeUserBtn.classList.add('hidden');
     }
 
