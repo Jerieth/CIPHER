@@ -8,6 +8,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 socketio = SocketIO(app)
 
+who_are_you_count = 0
+
 EVA_RESPONSES = [
     "That's interesting, {}! Could you tell me more about that?",
     "I see, {}. Have you considered the implications of that statement?",
@@ -40,6 +42,8 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
+    global who_are_you_count
+    who_are_you_count = 0
     emit('clear_chat', broadcast=True)
     send_eva_greeting()
 
@@ -52,12 +56,19 @@ def send_eva_greeting():
     emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
 
 def send_eva_response(user_name, user_message):
+    global who_are_you_count
     socketio.emit('user_typing', {'nickname': 'EVA'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
     # Check for specific questions
     lower_message = user_message.lower()
-    if "what are you" in lower_message or "who are you" in lower_message:
+    if "who are you" in lower_message:
+        who_are_you_count += 1
+        if who_are_you_count == 1:
+            eva_message = "My name is EVA and I am your ship's AI."
+        else:
+            eva_message = "Like I said before...My name is EVA and I am an AI."
+    elif "what are you" in lower_message:
         eva_message = "I am an artificial intelligence device created by MAG systems. I work independently and can adapt to control the functions for any ship or MAG device."
     else:
         eva_message = random.choice(EVA_RESPONSES).format(user_name)
