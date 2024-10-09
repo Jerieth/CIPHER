@@ -59,12 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
         isUsernameLocked = true;
         nicknameInput.disabled = true;
         changeUserBtn.textContent = 'Change User';
+        changeUserBtn.classList.remove('hidden');
     }
 
     function unlockUsername() {
         isUsernameLocked = false;
         nicknameInput.disabled = false;
-        changeUserBtn.textContent = 'Lock Username';
+        changeUserBtn.classList.add('hidden');
     }
 
     messageForm.addEventListener('submit', (e) => {
@@ -88,11 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     changeUserBtn.addEventListener('click', () => {
-        if (isUsernameLocked) {
-            unlockUsername();
-        } else {
-            lockUsername();
-        }
+        unlockUsername();
     });
 
     restartChatBtn.addEventListener('click', () => {
