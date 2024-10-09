@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const offlineMessage = document.createElement('div');
         offlineMessage.id = 'eva-offline-message';
         offlineMessage.textContent = 'EVA powering on. Please Stand By.';
-        offlineMessage.className = 'text-neon-cyan text-center my-4';
+        offlineMessage.className = 'text-red-500 text-center my-4 text-2xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10';
         chatMessages.appendChild(offlineMessage);
 
         setTimeout(() => {
