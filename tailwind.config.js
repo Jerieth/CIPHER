@@ -20,6 +20,13 @@ module.exports = {
       height: {
         '20': '5rem',
         '6': '1.5rem',
+        '120': '30rem',
+        '144': '36rem',
+      },
+      maxWidth: {
+        '2xl': '42rem',
+        '3xl': '52rem',
+        '90%': '90%',
       },
     },
   },
