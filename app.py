@@ -3,7 +3,6 @@ import time
 import random
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
@@ -24,25 +23,24 @@ def index():
 @socketio.on('connect')
 def handle_connect():
     time.sleep(1)  # Short delay before greeting
-    greeting = "Hello! I'm EVA, your AI chat companion. Welcome to our space-themed chat! May I ask your name?"
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    emit('receive_message', {'message': greeting, 'nickname': 'EVA', 'timestamp': timestamp})
+    greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
+    emit('receive_message', {'message': greeting, 'nickname': 'EVA'})
 
 @socketio.on('send_message')
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    emit('receive_message', {'message': message, 'nickname': nickname, 'timestamp': timestamp})
+    emit('receive_message', {'message': message, 'nickname': nickname})
     
     # Delayed EVA response
     socketio.start_background_task(send_eva_response, nickname)
 
 def send_eva_response(user_name):
+    socketio.emit('user_typing', {'nickname': 'EVA'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     eva_message = random.choice(EVA_RESPONSES).format(user_name)
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA', 'timestamp': timestamp})
+    socketio.emit('user_stop_typing', {'nickname': 'EVA'})
+    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'})
 
 @socketio.on('typing')
 def handle_typing(data):

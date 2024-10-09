@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('connect', () => {
         console.log('Connected to server');
-        // You can add any client-side initialization here if needed
     });
 
     messageForm.addEventListener('submit', (e) => {
@@ -39,12 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         const nicknameElement = document.createElement('span');
         nicknameElement.textContent = `${data.nickname}: `;
-        nicknameElement.className = 'font-bold mr-2';
+        nicknameElement.className = 'font-bold text-neon-cyan mr-2';
         messageElement.appendChild(nicknameElement);
-        const timestampElement = document.createElement('span');
-        timestampElement.textContent = data.timestamp;
-        timestampElement.className = 'text-xs text-gray-500 mr-2';
-        messageElement.appendChild(timestampElement);
         const messageTextElement = document.createElement('span');
         messageTextElement.textContent = data.message;
         messageElement.appendChild(messageTextElement);
@@ -54,11 +49,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_typing', (data) => {
-        typingIndicator.textContent = `${data.nickname} is typing...`;
+        if (data.nickname === 'EVA') {
+            typingIndicator.textContent = 'EVA is typing...';
+        } else {
+            typingIndicator.textContent = `${data.nickname} is typing...`;
+        }
         typingIndicator.classList.remove('hidden');
     });
 
     socket.on('user_stop_typing', (data) => {
-        typingIndicator.classList.add('hidden');
+        if (data.nickname === 'EVA') {
+            typingIndicator.classList.add('hidden');
+        } else if (typingIndicator.textContent === `${data.nickname} is typing...`) {
+            typingIndicator.classList.add('hidden');
+        }
     });
 });
