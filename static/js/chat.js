@@ -65,10 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('user_stop_typing', (data) => {
-        if (data.nickname === 'EVA') {
-            typingIndicator.classList.add('hidden');
-        } else if (typingIndicator.textContent === `${data.nickname} is typing...`) {
-            typingIndicator.classList.add('hidden');
-        }
+        typingIndicator.textContent = '';
+        typingIndicator.classList.add('hidden');
     });
 });
