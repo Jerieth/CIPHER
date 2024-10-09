@@ -14,8 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('receive_message', (data) => {
         const messageElement = document.createElement('div');
-        messageElement.textContent = data.message;
-        messageElement.className = 'mb-2 p-2 bg-gray-200 rounded';
+        const timestampElement = document.createElement('span');
+        timestampElement.textContent = data.timestamp;
+        timestampElement.className = 'text-xs text-gray-500 mr-2';
+        messageElement.appendChild(timestampElement);
+        const messageTextElement = document.createElement('span');
+        messageTextElement.textContent = data.message;
+        messageElement.appendChild(messageTextElement);
+        messageElement.className = 'mb-2 p-2 bg-gray-200 rounded flex items-center';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
