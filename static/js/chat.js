@@ -4,12 +4,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
     const nicknameInput = document.getElementById('nickname-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    let typingTimer;
+    const doneTypingInterval = 1000;
 
     messageForm.addEventListener('submit', (e) => {
         e.preventDefault();
         if (messageInput.value.trim() && nicknameInput.value.trim()) {
             socket.emit('send_message', { message: messageInput.value, nickname: nicknameInput.value });
             messageInput.value = '';
+            socket.emit('stop_typing', { nickname: nicknameInput.value });
+        }
+    });
+
+    messageInput.addEventListener('input', () => {
+        clearTimeout(typingTimer);
+        if (messageInput.value && nicknameInput.value.trim()) {
+            socket.emit('typing', { nickname: nicknameInput.value });
+            typingTimer = setTimeout(() => {
+                socket.emit('stop_typing', { nickname: nicknameInput.value });
+            }, doneTypingInterval);
+        } else {
+            socket.emit('stop_typing', { nickname: nicknameInput.value });
         }
     });
 
@@ -29,5 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
         messageElement.className = 'mb-2 p-2 bg-gray-200 rounded flex items-center';
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+
+    socket.on('user_typing', (data) => {
+        typingIndicator.textContent = `${data.nickname} is typing...`;
+        typingIndicator.classList.remove('hidden');
+    });
+
+    socket.on('user_stop_typing', (data) => {
+        typingIndicator.classList.add('hidden');
     });
 });
