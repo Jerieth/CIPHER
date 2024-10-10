@@ -37,7 +37,7 @@ def handle_connect():
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    emit('receive_message', {'message': message, 'nickname': nickname}, to=None)
+    emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
     # Delayed EVA response
     socketio.start_background_task(send_eva_response, nickname, message)
@@ -48,7 +48,8 @@ def handle_restart_chat():
     who_are_you_count = 0
     greeting_sent = False
     socketio.last_question = ""
-    emit('clear_chat', to=None)
+    emit('clear_chat', broadcast=True)
+    socketio.sleep(1)  # Short delay to ensure client-side is ready
     send_eva_greeting()
 
 @socketio.on('request_eva_greeting')
@@ -59,12 +60,12 @@ def send_eva_greeting():
     global greeting_sent
     if not greeting_sent:
         greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
-        emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, to=None)
+        emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
         greeting_sent = True
 
 def send_eva_response(user_name, user_message):
     global who_are_you_count
-    socketio.emit('user_typing', {'nickname': 'EVA'}, to=None)
+    socketio.emit('user_typing', {'nickname': 'EVA'}, broadcast=True)
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
     lower_message = user_message.lower()
@@ -87,8 +88,8 @@ def send_eva_response(user_name, user_message):
         eva_message = random.choice(EVA_RESPONSES).format(user_name)
     
     socketio.last_question = eva_message  # Store the last question asked by EVA
-    socketio.emit('user_stop_typing', {'nickname': 'EVA'}, to=None)
-    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, to=None)
+    socketio.emit('user_stop_typing', {'nickname': 'EVA'}, broadcast=True)
+    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
