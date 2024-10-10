@@ -3,6 +3,7 @@ import time
 import random
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
@@ -14,7 +15,6 @@ greeting_sent = False
 CIPHER_RESPONSES = [
     "That's interesting, {}! Could you tell me more about that?",
     "I see, {}. Have you considered the implications of that statement?",
-    "That's a unique perspective, {}. How did you come to that conclusion?",
     "Fascinating input, {}! Can you provide more context?",
     "I'm intrigued, {}. What led you to think about this topic?",
     "Interesting question about ship weapons, {}! Did you know there are three primary types: lasers, missiles, and auto-cannons? Each has its unique advantages and disadvantages.",
@@ -57,8 +57,11 @@ def handle_request_cipher_greeting():
 def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources). May I ask your name?"
-        emit('receive_message', {'message': greeting, 'nickname': 'CIPHER'}, broadcast=True)
+        greeting1 = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources)."
+        greeting2 = "How can I help you today?"
+        emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
+        socketio.sleep(1)  # Short delay between messages
+        emit('receive_message', {'message': greeting2, 'nickname': 'CIPHER'}, broadcast=True)
         greeting_sent = True
 
 def send_cipher_response(user_name, user_message):
@@ -86,10 +89,40 @@ def send_cipher_response(user_name, user_message):
     elif "what are you" in lower_message:
         cipher_message = "I am an artificial intelligence device created by MAG systems. I work independently and can adapt to control the functions for any ship or MAG device."
     else:
-        cipher_message = random.choice(CIPHER_RESPONSES).format(user_name)
+        # Use Voiceflow API for responses that would have used the removed response
+        cipher_message = get_voiceflow_response(user_message)
     
     socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
+
+def get_voiceflow_response(user_message):
+    # Replace with your actual Voiceflow API endpoint and API key
+    voiceflow_api_url = "https://general-runtime.voiceflow.com/state/user/123/interact"
+    headers = {
+        "Authorization": os.environ.get("VOICEFLOW_API_KEY"),
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "action": {
+            "type": "text",
+            "payload": user_message
+        }
+    }
+    
+    try:
+        response = requests.post(voiceflow_api_url, json=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        
+        # Extract the response from Voiceflow
+        for trace in data:
+            if trace['type'] == 'speak' or trace['type'] == 'text':
+                return trace['payload']['message']
+        
+        return "I'm not sure how to respond to that."
+    except requests.RequestException as e:
+        print(f"Error calling Voiceflow API: {e}")
+        return "I'm having trouble processing that right now. Can you try again?"
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
