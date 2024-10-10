@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('restart_chat');
     });
 
-    socket.on('clear_chat', () => {
+    socket.on('restart_chat', () => {
         chatMessages.innerHTML = '';
         unlockUsername();
         nicknameInput.value = '';

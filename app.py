@@ -46,7 +46,7 @@ def handle_restart_chat():
     global who_are_you_count, greeting_sent
     who_are_you_count = 0
     greeting_sent = False
-    emit('clear_chat', broadcast=True)
+    emit('restart_chat', broadcast=True)
     socketio.sleep(1)  # Short delay to ensure client-side is ready
     send_cipher_greeting()
 
@@ -57,7 +57,7 @@ def handle_request_cipher_greeting():
 def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources) and your personal data pad assistant. May I ask your name?"
+        greeting = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources). May I ask your name?"
         emit('receive_message', {'message': greeting, 'nickname': 'CIPHER'}, broadcast=True)
         greeting_sent = True
 
