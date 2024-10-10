@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nicknameElement.className = 'font-bold text-blue-700 mr-2';
         messageElement.appendChild(nicknameElement);
         const messageTextElement = document.createElement('span');
-        messageTextElement.textContent = data.message;
+        messageTextElement.innerHTML = data.message;
         messageTextElement.className = 'break-words max-w-[90%]';
         messageElement.appendChild(messageTextElement);
         messageElement.className = 'mb-2 p-2 bg-chat-bg rounded flex items-start text-base';
