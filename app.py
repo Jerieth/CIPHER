@@ -9,7 +9,6 @@ app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 socketio = SocketIO(app)
 
 who_are_you_count = 0
-socketio.last_question = ""
 greeting_sent = False
 
 CIPHER_RESPONSES = [
@@ -47,7 +46,6 @@ def handle_restart_chat():
     global who_are_you_count, greeting_sent
     who_are_you_count = 0
     greeting_sent = False
-    socketio.last_question = ""
     emit('clear_chat', broadcast=True)
     socketio.sleep(1)  # Short delay to ensure client-side is ready
     send_cipher_greeting()
@@ -74,7 +72,7 @@ def send_cipher_response(user_name, user_message):
         cipher_message = "Hello, I am CIPHER your ship's AI."
     elif "self-aware" in lower_message or "self aware" in lower_message:
         cipher_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
-    elif lower_message == "yes" and "self aware" in socketio.last_question.lower():
+    elif lower_message == "yes" and "self aware" in lower_message:
         cipher_message = "Interesting..."
     elif "who are you" in lower_message:
         who_are_you_count += 1
@@ -87,7 +85,6 @@ def send_cipher_response(user_name, user_message):
     else:
         cipher_message = random.choice(CIPHER_RESPONSES).format(user_name)
     
-    socketio.last_question = cipher_message  # Store the last question asked by CIPHER
     socketio.emit('user_stop_typing', {'nickname': 'CIPHER'}, broadcast=True)
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'}, broadcast=True)
 
