@@ -44,7 +44,7 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
-    global who_are_you_count, greeting_sent
+    global who_are_you_count, greeting_sent, socketio
     who_are_you_count = 0
     greeting_sent = False
     socketio.last_question = ""

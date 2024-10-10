@@ -107,11 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartChatBtn.addEventListener('click', () => {
         socket.emit('restart_chat');
-        chatMessages.innerHTML = '';
-        unlockUsername();
-        nicknameInput.value = '';
-        messageInput.value = '';
-        handleInitialDelay();
     });
 
     socket.on('clear_chat', () => {
@@ -119,8 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unlockUsername();
         nicknameInput.value = '';
         messageInput.value = '';
-        updateCipherStatus(true);
-        resetInactivityTimer();
+        handleInitialDelay();
     });
 
     socket.on('receive_message', (data) => {
