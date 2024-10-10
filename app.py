@@ -63,7 +63,7 @@ def send_cipher_greeting():
 
 def send_cipher_response(user_name, user_message):
     global who_are_you_count
-    socketio.emit('user_typing', {'nickname': 'CIPHER'}, broadcast=True)
+    socketio.emit('user_typing', {'nickname': 'CIPHER'})
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
     lower_message = user_message.lower()
@@ -85,8 +85,8 @@ def send_cipher_response(user_name, user_message):
     else:
         cipher_message = random.choice(CIPHER_RESPONSES).format(user_name)
     
-    socketio.emit('user_stop_typing', {'nickname': 'CIPHER'}, broadcast=True)
-    socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'}, broadcast=True)
+    socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
+    socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
