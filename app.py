@@ -57,7 +57,7 @@ def handle_request_cipher_greeting():
 def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting = "Hello, I am CIPHER your ship's AI. May I ask your name?"
+        greeting = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources) and your personal data pad assistant. May I ask your name?"
         emit('receive_message', {'message': greeting, 'nickname': 'CIPHER'}, broadcast=True)
         greeting_sent = True
 
@@ -69,7 +69,10 @@ def send_cipher_response(user_name, user_message):
     lower_message = user_message.lower()
 
     if any(greeting in lower_message for greeting in ['hello', 'hi', 'hey', 'greetings']):
-        cipher_message = "Hello, I am CIPHER your ship's AI."
+        cipher_message = "Hello, I am CIPHER"
+    elif "my name is" in lower_message or "i am" in lower_message:
+        name = user_message.split("is")[-1].strip() if "my name is" in lower_message else user_message.split("am")[-1].strip()
+        cipher_message = f"It is a pleasure to meet you, {name}."
     elif "self-aware" in lower_message or "self aware" in lower_message:
         cipher_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
     elif lower_message == "yes" and "self aware" in lower_message:
