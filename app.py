@@ -63,10 +63,9 @@ def send_cipher_response(user_name, user_message):
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
 
 def get_voiceflow_response(user_message):
-    # Replace with your actual Voiceflow API endpoint and API key
     voiceflow_api_url = "https://general-runtime.voiceflow.com/state/user/123/interact"
     headers = {
-        "Authorization": os.environ.get("VOICEFLOW_API_KEY"),
+        "Authorization": "VF.DM.67071c896b9fc85a0cde90bb.tESZFXwTBbku1VQj",
         "Content-Type": "application/json"
     }
     payload = {
