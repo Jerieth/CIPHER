@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function disableUserInput(disable) {
-        messageInput.disabled = disable;
+        messageInput.contentEditable = !disable;
         sendButton.disabled = disable;
         nicknameInput.disabled = disable;
         changeUserBtn.disabled = disable;
@@ -102,15 +102,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     messageForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (messageInput.value.trim() && nicknameInput.value.trim()) {
+        if (messageInput.textContent.trim() && nicknameInput.value.trim()) {
             if (!isUsernameLocked) {
                 lockUsername();
             }
             socket.emit("send_message", {
-                message: messageInput.value,
+                message: messageInput.innerHTML,
                 nickname: nicknameInput.value,
             });
-            messageInput.value = "";
+            messageInput.innerHTML = "";
             resetInactivityTimer();
         }
     });
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatMessages.innerHTML = "";
         unlockUsername();
         nicknameInput.value = "";
-        messageInput.value = "";
+        messageInput.innerHTML = "";
         handleInitialDelay();
     });
 
