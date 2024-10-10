@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         unlockUsername();
         nicknameInput.value = "";
         messageInput.innerHTML = "";
+        updateCipherStatus(false);
         handleInitialDelay();
     });
 
