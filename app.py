@@ -57,18 +57,22 @@ def handle_request_cipher_greeting():
 def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting1 = "Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources)."
-        greeting2 = "How can I help you today?"
+        greeting1 = 'Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).'
+        greeting2 = 'How can I help you today?'
         greeting3 = "Ask a question, and I'll use the knowledge you provided to respond."
-        greeting4 = "<b>Please be aware</b>: asking me certain questions may result in some <i>minor story spoilers</i>."
+        greeting4 = 'Please be aware: asking me certain questions may result in some minor story spoilers.'
         
         emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
+        print("Debug: Sent greeting1")  # Debug print
         socketio.sleep(1)  # Short delay between messages
         emit('receive_message', {'message': greeting2, 'nickname': 'CIPHER'}, broadcast=True)
+        print("Debug: Sent greeting2")  # Debug print
         socketio.sleep(1)  # Short delay between messages
         emit('receive_message', {'message': greeting3, 'nickname': 'CIPHER'}, broadcast=True)
+        print("Debug: Sent greeting3")  # Debug print
         socketio.sleep(1)  # Short delay between messages
         emit('receive_message', {'message': greeting4, 'nickname': 'CIPHER'}, broadcast=True)
+        print("Debug: Sent greeting4")  # Debug print
         greeting_sent = True
 
 def send_cipher_response(user_name, user_message):
