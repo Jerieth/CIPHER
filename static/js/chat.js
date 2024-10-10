@@ -138,13 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
         messageInput.innerHTML = "";
         updateCipherStatus(false);
         handleInitialDelay();
+        isUsernameLocked = false;
+        changeUserBtn.classList.add("hidden");
     });
 
     socket.on("receive_message", (data) => {
         const messageElement = document.createElement("div");
         const nicknameElement = document.createElement("span");
         nicknameElement.textContent = `${data.nickname}: `;
-        nicknameElement.className = "font-bold text-blue-700 mr-2";
+        nicknameElement.className = "font-bold text-black mr-2";
         messageElement.appendChild(nicknameElement);
 
         const messageTextElement = document.createElement("div");
