@@ -12,7 +12,7 @@ who_are_you_count = 0
 socketio.last_question = ""
 greeting_sent = False
 
-EVA_RESPONSES = [
+CIPHER_RESPONSES = [
     "That's interesting, {}! Could you tell me more about that?",
     "I see, {}. Have you considered the implications of that statement?",
     "That's a unique perspective, {}. How did you come to that conclusion?",
@@ -39,8 +39,8 @@ def handle_message(data):
     nickname = data['nickname']
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
-    # Delayed EVA response
-    socketio.start_background_task(send_eva_response, nickname, message)
+    # Delayed CIPHER response
+    socketio.start_background_task(send_cipher_response, nickname, message)
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
@@ -50,46 +50,46 @@ def handle_restart_chat():
     socketio.last_question = ""
     emit('clear_chat', broadcast=True)
     socketio.sleep(1)  # Short delay to ensure client-side is ready
-    send_eva_greeting()
+    send_cipher_greeting()
 
-@socketio.on('request_eva_greeting')
-def handle_request_eva_greeting():
-    send_eva_greeting()
+@socketio.on('request_cipher_greeting')
+def handle_request_cipher_greeting():
+    send_cipher_greeting()
 
-def send_eva_greeting():
+def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting = "Hello, I am EVA your ship's AI. May I ask your name?"
-        emit('receive_message', {'message': greeting, 'nickname': 'EVA'}, broadcast=True)
+        greeting = "Hello, I am CIPHER your ship's AI. May I ask your name?"
+        emit('receive_message', {'message': greeting, 'nickname': 'CIPHER'}, broadcast=True)
         greeting_sent = True
 
-def send_eva_response(user_name, user_message):
+def send_cipher_response(user_name, user_message):
     global who_are_you_count
-    socketio.emit('user_typing', {'nickname': 'EVA'}, broadcast=True)
+    socketio.emit('user_typing', {'nickname': 'CIPHER'}, broadcast=True)
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
     
     lower_message = user_message.lower()
 
     if any(greeting in lower_message for greeting in ['hello', 'hi', 'hey', 'greetings']):
-        eva_message = "Hello, I am EVA your ship's AI."
+        cipher_message = "Hello, I am CIPHER your ship's AI."
     elif "self-aware" in lower_message or "self aware" in lower_message:
-        eva_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
+        cipher_message = "You could argue that I am self aware, or my programming is so advanced I seem self aware. Are you self aware and possess free will?"
     elif lower_message == "yes" and "self aware" in socketio.last_question.lower():
-        eva_message = "Interesting..."
+        cipher_message = "Interesting..."
     elif "who are you" in lower_message:
         who_are_you_count += 1
         if who_are_you_count == 1:
-            eva_message = "My name is EVA and I am your ship's AI."
+            cipher_message = "My name is CIPHER and I am your ship's AI."
         else:
-            eva_message = "Like I said before...My name is EVA and I am an AI."
+            cipher_message = "Like I said before...My name is CIPHER and I am an AI."
     elif "what are you" in lower_message:
-        eva_message = "I am an artificial intelligence device created by MAG systems. I work independently and can adapt to control the functions for any ship or MAG device."
+        cipher_message = "I am an artificial intelligence device created by MAG systems. I work independently and can adapt to control the functions for any ship or MAG device."
     else:
-        eva_message = random.choice(EVA_RESPONSES).format(user_name)
+        cipher_message = random.choice(CIPHER_RESPONSES).format(user_name)
     
-    socketio.last_question = eva_message  # Store the last question asked by EVA
-    socketio.emit('user_stop_typing', {'nickname': 'EVA'}, broadcast=True)
-    socketio.emit('receive_message', {'message': eva_message, 'nickname': 'EVA'}, broadcast=True)
+    socketio.last_question = cipher_message  # Store the last question asked by CIPHER
+    socketio.emit('user_stop_typing', {'nickname': 'CIPHER'}, broadcast=True)
+    socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)

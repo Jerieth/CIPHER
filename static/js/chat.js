@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('message-input');
     const nicknameInput = document.getElementById('nickname-input');
     const typingIndicator = document.getElementById('typing-indicator');
-    const evaStatus = document.getElementById('eva-status');
+    const cipherStatus = document.getElementById('cipher-status');
     const changeUserBtn = document.getElementById('change-user-btn');
     const restartChatBtn = document.getElementById('restart-chat-btn');
     const sendButton = messageForm.querySelector('button[type="submit"]');
@@ -18,26 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let isUsernameLocked = false;
 
     function handleInitialDelay() {
-        updateEvaStatus(false);
+        updateCipherStatus(false);
         messageInput.disabled = true;
         sendButton.disabled = true;
         nicknameInput.disabled = true;
         changeUserBtn.disabled = true;
 
         const offlineMessage = document.createElement('div');
-        offlineMessage.id = 'eva-offline-message';
-        offlineMessage.textContent = 'EVA powering on. Please Stand By.';
+        offlineMessage.id = 'cipher-offline-message';
+        offlineMessage.textContent = 'CIPHER powering on. Please Stand By.';
         offlineMessage.className = 'text-red-500 text-center my-4 text-6xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10';
         chatMessages.appendChild(offlineMessage);
 
         setTimeout(() => {
-            updateEvaStatus(true);
+            updateCipherStatus(true);
             messageInput.disabled = false;
             sendButton.disabled = false;
             nicknameInput.disabled = false;
             changeUserBtn.disabled = false;
-            socket.emit('request_eva_greeting');
-            const offlineMsg = document.getElementById('eva-offline-message');
+            socket.emit('request_cipher_greeting');
+            const offlineMsg = document.getElementById('cipher-offline-message');
             if (offlineMsg) offlineMsg.remove();
         }, 5000);
     }
@@ -47,20 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
         handleInitialDelay();
     });
 
-    function updateEvaStatus(isOnline) {
+    function updateCipherStatus(isOnline) {
         if (isOnline) {
-            evaStatus.classList.remove('status-offline');
-            evaStatus.classList.add('status-online');
+            cipherStatus.classList.remove('status-offline');
+            cipherStatus.classList.add('status-online');
         } else {
-            evaStatus.classList.remove('status-online');
-            evaStatus.classList.add('status-offline');
+            cipherStatus.classList.remove('status-online');
+            cipherStatus.classList.add('status-offline');
         }
     }
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimer);
         inactivityTimer = setTimeout(() => {
-            updateEvaStatus(false);
+            updateCipherStatus(false);
         }, inactivityTimeout);
     }
 
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unlockUsername();
         nicknameInput.value = '';
         messageInput.value = '';
-        updateEvaStatus(true);
+        updateCipherStatus(true);
         resetInactivityTimer();
     });
 
@@ -137,23 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
-        if (data.nickname === 'EVA') {
-            updateEvaStatus(true);
+        if (data.nickname === 'CIPHER') {
+            updateCipherStatus(true);
             resetInactivityTimer();
         }
     });
 
     socket.on('user_typing', (data) => {
-        if (data.nickname === 'EVA') {
-            typingIndicator.textContent = 'EVA is typing...';
+        if (data.nickname === 'CIPHER') {
+            typingIndicator.textContent = 'CIPHER is typing...';
             typingIndicator.classList.remove('hidden');
-            updateEvaStatus(true);
+            updateCipherStatus(true);
             resetInactivityTimer();
         }
     });
 
     socket.on('user_stop_typing', (data) => {
-        if (data.nickname === 'EVA') {
+        if (data.nickname === 'CIPHER') {
             typingIndicator.textContent = '';
             typingIndicator.classList.add('hidden');
         }
