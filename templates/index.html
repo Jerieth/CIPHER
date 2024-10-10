@@ -41,6 +41,49 @@
             max-height: 10rem;
             overflow-y: auto;
         }
+        #chat-messages {
+            scrollbar-width: thin;
+            scrollbar-color: #4a5568 #2d3748;
+        }
+        #chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-messages::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+            border-radius: 4px;
+        }
+        .message {
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .cipher-message {
+            background-color: #3182ce;
+            color: #ffffff;
+            border-radius: 1rem 1rem 0 1rem;
+            align-self: flex-start;
+        }
+        .user-message {
+            background-color: #48bb78;
+            color: #ffffff;
+            border-radius: 1rem 1rem 1rem 0;
+            align-self: flex-end;
+        }
+        .message-content {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .message-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .message-content li {
+            margin-bottom: 0.25rem;
+        }
     </style>
 </head>
 <body class="bg-deep-space text-star-white font-orbitron h-screen flex items-center justify-center">
@@ -53,7 +96,7 @@
             </div>
         </div>
         <div id="typing-indicator" class="text-xs text-neon-cyan mb-2 h-6"></div>
-        <div id="chat-messages" class="h-180 w-full overflow-y-auto mb-4 p-2 border border-neon-pink rounded bg-white text-black text-xs"></div>
+        <div id="chat-messages" class="h-180 w-full overflow-y-auto mb-4 p-2 border border-neon-pink rounded bg-white text-black text-xs flex flex-col space-y-2"></div>
         <div id="username-display" class="hidden text-neon-cyan mb-2"></div>
         <div class="flex items-center mb-2 w-full">
             <input type="text" id="nickname-input" class="flex-grow bg-deep-space border border-neon-cyan rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink text-xs" placeholder="Enter your nickname">

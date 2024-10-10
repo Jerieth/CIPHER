@@ -145,12 +145,21 @@ document.addEventListener("DOMContentLoaded", () => {
         nicknameElement.textContent = `${data.nickname}: `;
         nicknameElement.className = "font-bold text-blue-700 mr-2";
         messageElement.appendChild(nicknameElement);
-        const messageTextElement = document.createElement("span");
-        messageTextElement.innerHTML = data.message;
-        messageTextElement.className = "break-words max-w-[90%]";
+
+        const messageTextElement = document.createElement("div");
+        messageTextElement.innerHTML = formatMessage(data.message);
+        messageTextElement.className = "message-content break-words";
         messageElement.appendChild(messageTextElement);
+
         messageElement.className =
-            "mb-2 p-2 bg-chat-bg rounded flex items-start text-base";
+            "message mb-4 p-4 bg-chat-bg rounded-lg shadow-md";
+        
+        if (data.nickname === "CIPHER") {
+            messageElement.classList.add("cipher-message");
+        } else {
+            messageElement.classList.add("user-message");
+        }
+
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -159,6 +168,21 @@ document.addEventListener("DOMContentLoaded", () => {
             resetInactivityTimer();
         }
     });
+
+    function formatMessage(message) {
+        // Convert markdown-style formatting to HTML
+        message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        message = message.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Convert bullet points
+        message = message.replace(/^- (.*?)$/gm, '<li>$1</li>');
+        message = message.replace(/<li>.*?<\/li>/gs, '<ul>$&</ul>');
+        
+        // Preserve line breaks
+        message = message.replace(/\n/g, '<br>');
+        
+        return message;
+    }
 
     socket.on("user_typing", (data) => {
         if (data.nickname === "CIPHER") {
