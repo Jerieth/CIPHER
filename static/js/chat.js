@@ -19,10 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleInitialDelay() {
         updateCipherStatus(false);
-        messageInput.disabled = true;
-        sendButton.disabled = true;
-        nicknameInput.disabled = true;
-        changeUserBtn.disabled = true;
+        disableUserInput(true);
 
         const offlineMessage = document.createElement('div');
         offlineMessage.id = 'cipher-offline-message';
@@ -32,14 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             updateCipherStatus(true);
-            messageInput.disabled = false;
-            sendButton.disabled = false;
-            nicknameInput.disabled = false;
-            changeUserBtn.disabled = false;
-            socket.emit('request_cipher_greeting');
             const offlineMsg = document.getElementById('cipher-offline-message');
             if (offlineMsg) offlineMsg.remove();
+
+            const warningMessage = document.createElement('div');
+            warningMessage.id = 'cipher-warning-message';
+            warningMessage.innerHTML = "Ask a question, and I'll use the knowledge you provided to respond.<br>Please be aware: asking me certain questions may result in some minor story spoilers.";
+            warningMessage.className = 'text-red-500 text-center my-4 text-2xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10';
+            chatMessages.appendChild(warningMessage);
+
+            setTimeout(() => {
+                const warningMsg = document.getElementById('cipher-warning-message');
+                if (warningMsg) warningMsg.remove();
+                disableUserInput(false);
+                socket.emit('request_cipher_greeting');
+            }, 10000);
         }, 5000);
+    }
+
+    function disableUserInput(disable) {
+        messageInput.disabled = disable;
+        sendButton.disabled = disable;
+        nicknameInput.disabled = disable;
+        changeUserBtn.disabled = disable;
     }
 
     socket.on('connect', () => {
