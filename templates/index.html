@@ -1,153 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CIPHER</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+        <title>CIPHER Chat</title>
         <link
+            rel="stylesheet"
             href="{{ url_for('static', filename='css/output.css') }}"
-            rel="stylesheet"
         />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
-            rel="stylesheet"
-        />
-        <style>
-            .chat-container {
-                position: relative;
-                z-index: 1;
-            }
-            .status-indicator {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                display: inline-block;
-                margin-left: 5px;
-            }
-            .status-online {
-                background-color: #00ff00;
-            }
-            .status-offline {
-                background-color: #ff0000;
-            }
-            #cipher-offline-message {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 10;
-                font-size: 24px;
-                color: #ff0000;
-                text-align: center;
-                width: 100%;
-            }
-            #message-input {
-                min-height: 5rem;
-                max-height: 10rem;
-                overflow-y: auto;
-            }
-            #chat-messages {
-                scrollbar-width: thin;
-                scrollbar-color: #4a5568 #2d3748;
-            }
-            #chat-messages::-webkit-scrollbar {
-                width: 8px;
-            }
-            #chat-messages::-webkit-scrollbar-track {
-                background: #2d3748;
-            }
-            #chat-messages::-webkit-scrollbar-thumb {
-                background-color: #4a5568;
-                border-radius: 4px;
-            }
-            .message {
-                max-width: 80%;
-                word-wrap: break-word;
-            }
-            .cipher-message {
-                background-color: #f4f4f4;
-                color: #000000;
-                border-radius: 1rem 1rem 0 1rem;
-                align-self: flex-start;
-            }
-            .user-message {
-                background-color: #2196f3;
-                color: #ffffff;
-                border-radius: 1rem 1rem 1rem 0;
-                align-self: flex-end;
-            }
-            .message-content {
-                font-size: 0.875rem;
-                line-height: 1.25rem;
-            }
-            .message-content ul {
-                list-style-type: disc;
-                padding-left: 1.5rem;
-                margin-top: 0.5rem;
-                margin-bottom: 0.5rem;
-            }
-            .message-content li {
-                margin-bottom: 0.25rem;
-            }
-            #disconnected-text {
-                color: #ff0000;
-                font-weight: bold;
-                animation: glow 1s ease-in-out infinite alternate;
-            }
-            @keyframes glow {
-                from {
-                    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
-                }
-                to {
-                    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
-                }
-            }
-            #power-button {
-                background-color: #00ff00;
-                color: #000000;
-                border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                font-size: 16px;
-                cursor: pointer;
-                display: none;
-                margin-left: 10px;
-            }
-            #reconnect-text {
-                color: #3b82f6;
-                font-weight: bold;
-                animation: glow-blue 1s ease-in-out infinite alternate;
-            }
-            @keyframes glow-blue {
-                from {
-                    text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6;
-                }
-                to {
-                    text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
-                }
-            }
-        </style>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"
+        ></script>
     </head>
-    <body
-        class="bg-deep-space text-star-white font-orbitron h-screen flex items-center justify-center"
-    >
-        <div
-            class="w-full max-w-4xl bg-cosmic-blue rounded-lg shadow-lg p-6 chat-container"
-        >
-            <div class="flex justify-between items-center mb-4">
-                <h1 class="text-xl font-bold text-neon-cyan animate-pulse-slow">
-                    CIPHER
-                    <span
-                        id="cipher-status"
-                        class="status-indicator status-offline"
-                    ></span>
-                    <span id="disconnected-text" style="display: none;">Disconnected</span>
-                    <button id="power-button">⏻</button>
-                    <span id="reconnect-text" style="display: none;">Click to Reconnect</span>
-                </h1>
-                <div>
+    <body class="bg-deep-space text-neon-cyan font-orbitron">
+        <div class="container mx-auto p-4 max-w-4xl">
+            <h1 class="text-4xl font-bold mb-4 text-center">CIPHER Chat</h1>
+            <div class="flex items-center justify-between mb-4">
+                <div
+                    id="cipher-status"
+                    class="w-4 h-4 rounded-full status-offline"
+                ></div>
+                <div class="flex items-center space-x-2">
+                    <span id="disconnected-text" class="text-red-500 hidden"
+                        >Disconnected</span
+                    >
+                    <button
+                        id="power-button"
+                        class="bg-neon-pink text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors duration-300 hidden"
+                    >
+                        Power On
+                    </button>
+                    <span id="reconnect-text" class="text-neon-cyan hidden"
+                        >Click to reconnect</span
+                    >
                     <button
                         id="restart-chat-btn"
                         class="bg-neon-cyan text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300"
@@ -162,7 +49,7 @@
                     </button>
                     <button
                         id="change-user-btn"
-                        class="hidden bg-[#0d47a1] text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300 ml-2"
+                        class="hidden bg-chat-bg text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300 ml-2"
                     >
                         Change User
                     </button>
