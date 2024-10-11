@@ -1,5 +1,4 @@
-import os
-from flask import Flask, render_template, abort
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import time
 import random
@@ -11,10 +10,6 @@ socketio = SocketIO(app)
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/manager.js')
-def manager_js():
-    abort(404)  # Return 404 for any requests to manager.js
 
 @socketio.on('connect')
 def handle_connect():
