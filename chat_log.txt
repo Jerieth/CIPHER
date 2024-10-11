@@ -2,3 +2,49 @@
 [2024-10-11 18:27:49] CIPHER: How can I help you today?
 [2024-10-11 18:31:00] Jerieth: Hello
 [2024-10-11 18:32:24] Jerieth: What kind of weapons can I use?
+[2024-10-11 18:36:23] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:36:24] CIPHER: How can I help you today?
+[2024-10-11 18:36:53] Jereith: What can you tell me about ship weapons?
+[2024-10-11 18:37:04] CIPHER: Absolutely! Here’s a concise overview of ship weapons:
+
+### Ship Weapons Overview
+
+1. **Lasers**:
+   - **Description**: Require power from the ship's power core to fire.
+   - **Strengths**: 
+     - Very accurate.
+     - Effective against heavily shielded ships, especially ion-based shields.
+     - Can penetrate both shields and armor.
+   - **Weaknesses**: 
+     - Damage output depends on power allocation.
+
+2. **Missiles**:
+   - **Description**: Explode on impact or within a specified range.
+   - **Strengths**: 
+     - Effective against both shields and armor.
+     - Can cause damage through the shockwave of the explosion.
+     - Don’t require precise targeting.
+   - **Weaknesses**: 
+     - Exhaustible resource; must be reloaded.
+     - Reloading time varies by ship and missile type.
+
+3. **Auto-Cannons**:
+   - **Description**: Operate independently of the power core.
+   - **Strengths**: 
+     - Can function even when the main power is down.
+     - Effective against small, agile targets.
+     - Damage output can be increased with additional turrets.
+   - **Weaknesses**: 
+     - Low accuracy; require manual targeting.
+     - Typically do less damage than lasers or missiles.
+
+### Tactical Considerations
+- **Choosing Weapons**: The effectiveness of each weapon can depend on the enemy type and your overall mission objectives. For example:
+  - **Against heavily armored ships**: Use a combination of Ion Lasers and Missiles.
+  - **Against fast fighters**: Auto-Cannons may be more effective.
+
+If you have specific scenarios or enemies in mind, let me know, and I can help you strategize further! 😊
+[2024-10-11 18:37:43] Jereith: TEST
+[2024-10-11 18:37:46] CIPHER: Ask a question, and I'll use the knowledge you provided to respond. 
+
+Please be aware: asking me certain questions may result in some minor story spoilers.
