@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const fullScreenBtn = document.getElementById("full-screen-btn");
     const sendButton = messageForm.querySelector('button[type="submit"]');
     const usernameDisplay = document.getElementById("username-display");
+    const disconnectedText = document.getElementById("disconnected-text");
+    const powerButton = document.getElementById("power-button");
 
     let typingTimer;
     const doneTypingInterval = 1000;
@@ -72,9 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isOnline) {
             cipherStatus.classList.remove("status-offline");
             cipherStatus.classList.add("status-online");
+            disconnectedText.style.display = "none";
+            powerButton.style.display = "none";
         } else {
             cipherStatus.classList.remove("status-online");
             cipherStatus.classList.add("status-offline");
+            disconnectedText.style.display = "inline";
+            powerButton.style.display = "inline-block";
         }
     }
 
@@ -135,6 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fullScreenBtn.addEventListener("click", () => {
         toggleFullScreen();
+    });
+
+    powerButton.addEventListener("click", () => {
+        updateCipherStatus(true);
+        socket.emit("request_cipher_greeting");
     });
 
     function toggleFullScreen() {
