@@ -28,6 +28,7 @@ class ChatLog(db.Model):
         return f'<ChatLog {self.nickname}: {self.message}>'
 
 with app.app_context():
+    print(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
     db.create_all()
 
 greeting_sent = False
