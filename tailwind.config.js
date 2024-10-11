@@ -9,7 +9,6 @@ module.exports = {
         "neon-cyan": "#08F7FE",
         "neon-pink": "#FF2A6D",
         "star-white": "#FFFFFF",
-        "blue-500": "#3b82f6",
         "chat-bg": "#F0F0F0",
       },
       fontFamily: {
