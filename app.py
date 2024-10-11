@@ -30,6 +30,12 @@ with app.app_context():
 who_are_you_count = 0
 greeting_sent = False
 
+def log_to_file(nickname, message):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"[{timestamp}] {nickname}: {message}\n"
+    with open("chat_log.txt", "a") as log_file:
+        log_file.write(log_entry)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -47,6 +53,9 @@ def handle_message(data):
     chat_log = ChatLog(nickname=nickname, message=message)
     db.session.add(chat_log)
     db.session.commit()
+    
+    # Log the message to the text file
+    log_to_file(nickname, message)
     
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
@@ -73,8 +82,10 @@ def send_cipher_greeting():
         greeting2 = 'How can I help you today?'
         
         emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
+        log_to_file('CIPHER', greeting1)
         socketio.sleep(1)
         emit('receive_message', {'message': greeting2, 'nickname': 'CIPHER'}, broadcast=True)
+        log_to_file('CIPHER', greeting2)
         greeting_sent = True
 
 def send_cipher_response(user_name, user_message):
@@ -87,6 +98,9 @@ def send_cipher_response(user_name, user_message):
     chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
     db.session.add(chat_log)
     db.session.commit()
+    
+    # Log CIPHER's response to the text file
+    log_to_file('CIPHER', cipher_message)
     
     socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
