@@ -119,5 +119,17 @@ def get_voiceflow_response(user_message):
         print(f"Error calling Voiceflow API: {e}")
         return ""  # Return an empty string in case of an error
 
+def export_schema():
+    from sqlalchemy import create_engine
+    from sqlalchemy.schema import CreateTable
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    with engine.connect() as conn:
+        create_table_sql = CreateTable(ChatLog.__table__).compile(conn)
+    return str(create_table_sql)
+
+@app.route('/export_schema')
+def export_schema_route():
+    return export_schema(), 200, {'Content-Type': 'text/plain'}
+
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
