@@ -16,12 +16,6 @@
             <input type="text" id="message-input" placeholder="Type your message" required class="flex-grow p-2 rounded bg-cosmic-blue text-star-white placeholder-star-white placeholder-opacity-50">
             <button type="submit" class="px-4 py-2 bg-neon-pink text-star-white rounded hover:bg-opacity-80 transition-colors">Send</button>
         </form>
-        <div class="flex justify-between">
-            <button id="restart-chat-btn" class="px-4 py-2 bg-neon-cyan text-deep-space rounded hover:bg-opacity-80 transition-colors">Restart Chat</button>
-            <button id="full-screen-btn" class="px-4 py-2 bg-green-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Full Screen</button>
-            <button id="change-user-btn" class="px-4 py-2 bg-blue-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Change User</button>
-            <button id="disconnect-btn" class="px-4 py-2 bg-red-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Disconnect</button>
-        </div>
     </div>
     <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
