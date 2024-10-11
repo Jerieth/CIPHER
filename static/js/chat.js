@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cipherStatus = document.getElementById("cipher-status");
     const changeUserBtn = document.getElementById("change-user-btn");
     const restartChatBtn = document.getElementById("restart-chat-btn");
+    const fullScreenBtn = document.getElementById("full-screen-btn");
     const sendButton = messageForm.querySelector('button[type="submit"]');
     const usernameDisplay = document.getElementById("username-display");
 
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let inactivityTimer;
     const inactivityTimeout = 5 * 60 * 1000; // 5 minutes
     let isUsernameLocked = false;
+    let isFullScreen = false;
 
     function handleInitialDelay() {
         updateCipherStatus(false);
@@ -129,6 +131,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     restartChatBtn.addEventListener("click", () => {
         socket.emit("restart_chat");
+    });
+
+    fullScreenBtn.addEventListener("click", () => {
+        toggleFullScreen();
+    });
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch((err) => {
+                console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+        if (document.fullscreenElement) {
+            fullScreenBtn.textContent = "Exit Full Screen";
+            isFullScreen = true;
+        } else {
+            fullScreenBtn.textContent = "Full Screen";
+            isFullScreen = false;
+        }
     });
 
     socket.on("restart_chat", () => {
