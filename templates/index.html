@@ -1,100 +1,52 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CIPHER Chat</title>
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/output.css') }}"
-        />
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-            crossorigin="anonymous"
-        ></script>
-    </head>
-    <body class="bg-deep-space text-neon-cyan font-orbitron">
-        <div class="container mx-auto p-4 max-w-4xl">
-            <h1 class="text-4xl font-bold mb-4 text-center">CIPHER Chat</h1>
-            <div class="flex items-center justify-between mb-4">
-                <div
-                    id="cipher-status"
-                    class="w-4 h-4 rounded-full status-offline"
-                ></div>
-                <div class="flex items-center space-x-2">
-                    <span id="disconnected-text" class="text-red-500 hidden"
-                        >Disconnected</span
-                    >
-                    <button
-                        id="power-button"
-                        class="bg-neon-pink text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors duration-300 hidden"
-                    >
-                        Power On
-                    </button>
-                    <span id="reconnect-text" class="text-neon-cyan hidden"
-                        >Click to reconnect</span
-                    >
-                    <button
-                        id="restart-chat-btn"
-                        class="bg-neon-cyan text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300"
-                    >
-                        Restart Chat
-                    </button>
-                    <button
-                        id="full-screen-btn"
-                        class="bg-green-500 text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300 ml-2"
-                    >
-                        Full Screen
-                    </button>
-                    <button
-                        id="change-user-btn"
-                        class="hidden bg-blue-500 text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-pink transition-colors duration-300 ml-2"
-                    >
-                        Change User
-                    </button>
-                    <button
-                        id="disconnect-btn"
-                        class="bg-neon-pink text-deep-space px-2 py-1 rounded text-xs hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors duration-300 ml-2"
-                    >
-                        Disconnect
-                    </button>
-                </div>
-            </div>
-            <div
-                id="typing-indicator"
-                class="text-xs text-neon-cyan mb-2 h-6"
-            ></div>
-            <div
-                id="chat-messages"
-                class="h-180 w-full overflow-y-auto mb-4 p-2 border border-neon-pink rounded bg-white text-black text-xs flex flex-col space-y-2"
-            ></div>
-            <div id="username-display" class="hidden text-neon-cyan mb-2"></div>
-            <div class="flex items-center mb-2 w-full">
-                <input
-                    type="text"
-                    id="nickname-input"
-                    class="flex-grow bg-deep-space border border-neon-cyan rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink text-xs"
-                    placeholder="Enter your nickname"
-                />
-            </div>
-            <form id="message-form" class="flex items-end space-x-2">
-                <div class="flex-grow">
-                    <div
-                        id="message-input"
-                        contenteditable="true"
-                        class="w-full bg-deep-space border border-neon-cyan rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-pink text-xs"
-                        placeholder="Type your message..."
-                    ></div>
-                </div>
-                <button
-                    type="submit"
-                    class="bg-neon-pink text-star-white px-2.5 py-1.5 rounded-r hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors duration-300 text-[11px] h-20"
-                >
-                    Send
-                </button>
-            </form>
-        </div>
-        <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIPHER Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        #message-form {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>CIPHER Chat</h1>
+    <div id="chat-messages"></div>
+    <form id="message-form">
+        <input type="text" id="nickname-input" placeholder="Your nickname" required>
+        <input type="text" id="message-input" placeholder="Type your message" required>
+        <button type="submit">Send</button>
+    </form>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
 </html>

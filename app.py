@@ -1,17 +1,13 @@
+
 import os
-import time
-import random
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-import requests
+import time
+import random
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-
-who_are_you_count = 0
-greeting_sent = False
-chat_history = []  # Add this line to store chat history
 
 @app.route('/')
 def index():
@@ -19,84 +15,32 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    pass
+    print('Client connected')
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
 
 @socketio.on('send_message')
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    chat_history.append({'message': message, 'nickname': nickname})  # Add this line
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
-    # Delayed CIPHER response
-    socketio.start_background_task(send_cipher_response, nickname, message)
+    # Simulate CIPHER's response
+    socketio.start_background_task(send_cipher_response, nickname)
 
-@socketio.on('restart_chat')
-def handle_restart_chat():
-    global who_are_you_count, greeting_sent, chat_history
-    who_are_you_count = 0
-    greeting_sent = False
-    chat_history = []  # Clear chat history
-    emit('restart_chat', broadcast=True)
-    socketio.sleep(1)  # Short delay to ensure client-side is ready
-    send_cipher_greeting()
-
-@socketio.on('clear_chat_history')
-def handle_clear_chat_history():
-    global chat_history
-    chat_history = []  # Clear chat history
-
-@socketio.on('request_cipher_greeting')
-def handle_request_cipher_greeting():
-    send_cipher_greeting()
-
-def send_cipher_greeting():
-    global greeting_sent
-    if not greeting_sent:
-        greeting1 = 'Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).'
-        greeting2 = 'How can I help you today?'
-        
-        emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
-        socketio.sleep(1)  # Short delay between messages
-        emit('receive_message', {'message': greeting2, 'nickname': 'CIPHER'}, broadcast=True)
-        greeting_sent = True
-
-def send_cipher_response(user_name, user_message):
-    socketio.emit('user_typing', {'nickname': 'CIPHER'})
+def send_cipher_response(user_name):
     time.sleep(random.uniform(1, 3))  # Random delay between 1 and 3 seconds
-    
-    cipher_message = get_voiceflow_response(user_message)
-    
-    socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
+    responses = [
+        f"Thank you for your message, {user_name}. How can I assist you today?",
+        f"Greetings, {user_name}. What would you like to know about the EVA mission?",
+        f"Hello {user_name}, I'm here to help with any questions about our space exploration efforts.",
+        f"{user_name}, your input is valuable. What aspect of the mission would you like to discuss?",
+        f"Welcome, {user_name}. I'm ready to provide information on our current space technologies and missions."
+    ]
+    cipher_message = random.choice(responses)
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
 
-def get_voiceflow_response(user_message):
-    voiceflow_api_url = "https://general-runtime.voiceflow.com/state/user/123/interact"
-    headers = {
-        "Authorization": "VF.DM.67071c896b9fc85a0cde90bb.tESZFXwTBbku1VQj",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "action": {
-            "type": "text",
-            "payload": user_message
-        }
-    }
-    
-    try:
-        response = requests.post(voiceflow_api_url, json=payload, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        
-        # Extract the response from Voiceflow
-        for trace in data:
-            if trace['type'] == 'speak' or trace['type'] == 'text':
-                return trace['payload']['message']
-        
-        return ""  # Return an empty string if no response is found
-    except requests.RequestException as e:
-        print(f"Error calling Voiceflow API: {e}")
-        return ""  # Return an empty string in case of an error
-
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", port=5000)
+    socketio.run(app, host='0.0.0.0', port=5000)
