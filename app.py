@@ -7,6 +7,9 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or "sqlite:///cypher.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
