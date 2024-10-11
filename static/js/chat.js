@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let typingTimer;
     const doneTypingInterval = 1000;
-    let inactivityTimer;
-    const inactivityTimeout = 5 * 60 * 1000; // 5 minutes
     let isUsernameLocked = false;
     let isFullScreen = false;
 
@@ -76,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function displayOfflineMessage(message) {
-        removeOfflineMessage(); // Remove any existing offline message
+        removeOfflineMessage();
         powerButton.style.display = "none";
         reconnectText.style.display = "none";
         const offlineMessage = document.createElement("div");
@@ -108,13 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (warningMsg) warningMsg.remove();
     }
 
-    function resetInactivityTimer() {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(() => {
-            updateCipherStatus(false);
-        }, inactivityTimeout);
-    }
-
     function lockUsername() {
         isUsernameLocked = true;
         usernameDisplay.textContent = nicknameInput.value;
@@ -123,10 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
         changeUserBtn.textContent = "Change User";
         changeUserBtn.classList.remove("hidden");
         typingTimer = null;
-        inactivityTimer = null;
 
         socket.emit("clear_chat_history");
-
         socket.emit("request_cipher_greeting");
     }
 
@@ -149,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 nickname: nicknameInput.value,
             });
             messageInput.innerHTML = "";
-            resetInactivityTimer();
         }
     });
 
@@ -158,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             messageForm.dispatchEvent(new Event("submit"));
         }
-        resetInactivityTimer();
     });
 
     changeUserBtn.addEventListener("click", () => {
@@ -173,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fullScreenBtn.addEventListener("click", () => {
         toggleFullScreen();
     });
+
     powerButton.addEventListener("click", () => {
         updateCipherStatus(true);
         socket.emit("request_cipher_greeting");
@@ -218,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isUsernameLocked = false;
         changeUserBtn.classList.add("hidden");
     }
+
     socket.on("restart_chat", () => {
         restartChat();
     });
@@ -248,7 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data.nickname === "CIPHER") {
             updateCipherStatus(true);
-            resetInactivityTimer();
         }
     });
 
@@ -269,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
             typingIndicator.textContent = "CIPHER is typing...";
             typingIndicator.classList.remove("hidden");
             updateCipherStatus(true);
-            resetInactivityTimer();
         }
     });
 
@@ -279,6 +266,4 @@ document.addEventListener("DOMContentLoaded", () => {
             typingIndicator.classList.add("hidden");
         }
     });
-
-    resetInactivityTimer();
 });
