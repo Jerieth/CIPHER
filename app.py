@@ -4,14 +4,31 @@ import random
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import requests
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 socketio = SocketIO(app)
+
+class ChatLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nickname = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<ChatLog {self.nickname}: {self.message}>'
+
+with app.app_context():
+    db.create_all()
 
 who_are_you_count = 0
 greeting_sent = False
-chat_history = []
 
 @app.route('/')
 def index():
@@ -25,7 +42,12 @@ def handle_connect():
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    chat_history.append({'message': message, 'nickname': nickname})
+    
+    # Log the message to the database
+    chat_log = ChatLog(nickname=nickname, message=message)
+    db.session.add(chat_log)
+    db.session.commit()
+    
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
     # Delayed CIPHER response
@@ -33,18 +55,12 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
-    global who_are_you_count, greeting_sent, chat_history
+    global who_are_you_count, greeting_sent
     who_are_you_count = 0
     greeting_sent = False
-    chat_history = []
     emit('restart_chat', broadcast=True)
     socketio.sleep(1)
     send_cipher_greeting()
-
-@socketio.on('clear_chat_history')
-def handle_clear_chat_history():
-    global chat_history
-    chat_history = []
 
 @socketio.on('request_cipher_greeting')
 def handle_request_cipher_greeting():
@@ -66,6 +82,11 @@ def send_cipher_response(user_name, user_message):
     time.sleep(random.uniform(1, 3))
     
     cipher_message = get_voiceflow_response(user_message)
+    
+    # Log CIPHER's response to the database
+    chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
+    db.session.add(chat_log)
+    db.session.commit()
     
     socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
     socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
