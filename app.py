@@ -89,21 +89,22 @@ def send_cipher_greeting():
         greeting_sent = True
 
 def send_cipher_response(user_name, user_message):
-    socketio.emit('user_typing', {'nickname': 'CIPHER'})
-    time.sleep(random.uniform(1, 3))
-    
-    cipher_message = get_voiceflow_response(user_message)
-    
-    # Log CIPHER's response to the database
-    chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
-    db.session.add(chat_log)
-    db.session.commit()
-    
-    # Log CIPHER's response to the text file
-    log_to_file('CIPHER', cipher_message)
-    
-    socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
-    socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
+    with app.app_context():
+        socketio.emit('user_typing', {'nickname': 'CIPHER'})
+        time.sleep(random.uniform(1, 3))
+        
+        cipher_message = get_voiceflow_response(user_message)
+        
+        # Log CIPHER's response to the database
+        chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
+        db.session.add(chat_log)
+        db.session.commit()
+        
+        # Log CIPHER's response to the text file
+        log_to_file('CIPHER', cipher_message)
+        
+        socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
+        socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
 
 def get_voiceflow_response(user_message):
     voiceflow_api_url = "https://general-runtime.voiceflow.com/state/user/123/interact"

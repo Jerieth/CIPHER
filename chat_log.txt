@@ -1,3 +1,4 @@
 [2024-10-11 18:27:48] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
 [2024-10-11 18:27:49] CIPHER: How can I help you today?
 [2024-10-11 18:31:00] Jerieth: Hello
+[2024-10-11 18:32:24] Jerieth: What kind of weapons can I use?
