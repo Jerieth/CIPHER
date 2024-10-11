@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
             updateCipherStatus(true);
             removeOfflineMessage();
 
-            displayWarningMessage("Ask a question, and I'll use the knowledge you provided to respond.<br><br>Please be aware: asking me certain questions may result in some minor story spoilers.");
+            displayWarningMessage(
+                "Ask a question, and I'll use the knowledge you provided to respond.<br><br>Please be aware: asking certain questions may result in some minor story spoilers.",
+            );
 
             setTimeout(() => {
                 removeWarningMessage();
@@ -177,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch((err) => {
-                console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+                console.log(
+                    `Error attempting to enable full-screen mode: ${err.message}`,
+                );
             });
         } else {
             if (document.exitFullscreen) {
@@ -234,13 +238,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function formatMessage(message) {
-        message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        message = message.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        message = message.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        message = message.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-        message = message.replace(/^- (.*?)$/gm, '<li>$1</li>');
-        message = message.replace(/<li>.*?<\/li>/gs, '<ul>$&</ul>');
+        message = message.replace(/^- (.*?)$/gm, "<li>$1</li>");
+        message = message.replace(/<li>.*?<\/li>/gs, "<ul>$&</ul>");
 
-        message = message.replace(/\n/g, '<br>');
+        message = message.replace(/\n/g, "<br>");
 
         return message;
     }

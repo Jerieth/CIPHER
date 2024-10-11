@@ -137,3 +137,74 @@ If you have any specific areas you want tips on, just let me know! 😊
 [2024-10-11 18:55:07] CIPHER: How can I help you today?
 [2024-10-11 18:55:07] CIPHER: How can I help you today?
 [2024-10-11 18:55:08] CIPHER: How can I help you today?
+[2024-10-11 18:57:11] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:57:12] CIPHER: How can I help you today?
+[2024-10-11 19:14:55] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:14:55] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:14:56] CIPHER: How can I help you today?
+[2024-10-11 19:14:56] CIPHER: How can I help you today?
+[2024-10-11 19:15:49] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:15:50] CIPHER: How can I help you today?
+[2024-10-11 19:16:05] Jerieth: How are you?
+[2024-10-11 19:16:10] CIPHER: I'm doing well, thank you for asking! 😊 I'm here to assist you with any questions or support you might need. How can I help you today?
+[2024-10-11 19:16:15] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:16:16] CIPHER: How can I help you today?
+[2024-10-11 19:16:59] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:16:59] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:17:00] CIPHER: How can I help you today?
+[2024-10-11 19:17:00] CIPHER: How can I help you today?
+[2024-10-11 19:17:13] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:17:14] CIPHER: How can I help you today?
+[2024-10-11 19:32:48] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:32:49] CIPHER: How can I help you today?
+[2024-10-11 19:34:01] Jerieth: Hello
+[2024-10-11 19:34:06] CIPHER: Hello again! 😊 How can I assist you today? If you have any questions or need help with something specific, just let me know!
+[2024-10-11 19:34:09] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:34:10] CIPHER: How can I help you today?
+[2024-10-11 19:34:34] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:34:35] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:34:35] CIPHER: How can I help you today?
+[2024-10-11 19:34:36] CIPHER: How can I help you today?
+[2024-10-11 19:35:06] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:35:07] CIPHER: How can I help you today?
+[2024-10-11 19:35:30] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:35:31] CIPHER: How can I help you today?
+[2024-10-11 19:36:26] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:36:27] CIPHER: How can I help you today?
+[2024-10-11 19:36:46] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:36:47] CIPHER: How can I help you today?
+[2024-10-11 19:38:44] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 19:38:45] CIPHER: How can I help you today?
+[2024-10-11 19:38:59] Jerieth: How do I upgrade my ship?
+[2024-10-11 19:39:08] CIPHER: Upgrading your ship is an exciting part of the game! Here’s a simple step-by-step guide on how to do it:
+
+### How to Upgrade Your Ship
+
+1. **Access the Upgrade Menu**:
+   - Navigate to the ship management or upgrade section in your game interface.
+
+2. **Choose Upgrade Type**:
+   - You can upgrade various systems, including:
+     - **Hull**: Increases durability.
+     - **Shield Capacity**: Enhances shield strength.
+     - **Engines**: Improves maneuverability.
+     - **Weapons**: Boosts damage output.
+     - **Cargo Capacity**: Increases storage space.
+
+3. **Select Specific Upgrades**:
+   - For weapons, you might choose options like:
+     - **Ion Missiles**: Effective against shields.
+     - **Heavy Autocannon**: Increases damage against all targets.
+
+4. **Gather Resources**:
+   - Ensure you have the necessary resources, such as power crystals, to perform the upgrades.
+
+5. **Confirm Upgrades**:
+   - Once you’ve selected your upgrades and ensured you have the resources, confirm the upgrades to apply them to your ship.
+
+6. **Test Your Upgrades**:
+   - After upgrading, take your ship for a test flight to see how the changes improve your performance!
+
+If you have any specific upgrades in mind or need further assistance, feel free to ask! 😊
+[2024-10-11 20:44:30] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 20:44:31] CIPHER: How can I help you today?
