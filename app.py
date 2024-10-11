@@ -48,17 +48,14 @@ def handle_message(data):
     message = data['message']
     nickname = data['nickname']
     
-    # Log the message to the database
     chat_log = ChatLog(nickname=nickname, message=message)
     db.session.add(chat_log)
     db.session.commit()
     
-    # Log the message to the text file
     log_to_file(nickname, message)
     
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
-    # Delayed CIPHER response
     socketio.start_background_task(send_cipher_response, nickname, message)
 
 @socketio.on('restart_chat')
@@ -93,12 +90,10 @@ def send_cipher_response(user_name, user_message):
         
         cipher_message = get_voiceflow_response(user_message)
         
-        # Log CIPHER's response to the database
         chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
         db.session.add(chat_log)
         db.session.commit()
         
-        # Log CIPHER's response to the text file
         log_to_file('CIPHER', cipher_message)
         
         socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
@@ -122,15 +117,14 @@ def get_voiceflow_response(user_message):
         response.raise_for_status()
         data = response.json()
         
-        # Extract the response from Voiceflow
         for trace in data:
             if trace['type'] == 'speak' or trace['type'] == 'text':
                 return trace['payload']['message']
         
-        return ""  # Return an empty string if no response is found
+        return ""
     except requests.RequestException as e:
         print(f"Error calling Voiceflow API: {e}")
-        return ""  # Return an empty string in case of an error
+        return ""
 
 def export_schema():
     from sqlalchemy import create_engine
