@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCipherStatus(false);
         disableUserInput(true);
 
-        // Hide Power button and 'Click to Reconnect' text
         powerButton.style.display = "none";
         reconnectText.style.display = "none";
 
@@ -148,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     restartChatBtn.addEventListener("click", () => {
         socket.emit("restart_chat");
+        restartChat();
     });
 
     fullScreenBtn.addEventListener("click", () => {
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    socket.on("restart_chat", () => {
+    function restartChat() {
         chatMessages.innerHTML = "";
         unlockUsername();
         nicknameInput.value = "";
@@ -198,6 +198,10 @@ document.addEventListener("DOMContentLoaded", () => {
         handleInitialDelay();
         isUsernameLocked = false;
         changeUserBtn.classList.add("hidden");
+    }
+
+    socket.on("restart_chat", () => {
+        restartChat();
     });
 
     socket.on("receive_message", (data) => {
@@ -231,17 +235,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function formatMessage(message) {
-        // Convert markdown-style formatting to HTML
         message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         message = message.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
-        // Convert bullet points
         message = message.replace(/^- (.*?)$/gm, '<li>$1</li>');
         message = message.replace(/<li>.*?<\/li>/gs, '<ul>$&</ul>');
-        
-        // Preserve line breaks
         message = message.replace(/\n/g, '<br>');
-        
         return message;
     }
 
@@ -261,6 +259,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Initialize inactivity timer
     resetInactivityTimer();
 });
