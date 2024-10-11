@@ -9,10 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const changeUserBtn = document.getElementById("change-user-btn");
     const restartChatBtn = document.getElementById("restart-chat-btn");
     const fullScreenBtn = document.getElementById("full-screen-btn");
+    const disconnectBtn = document.getElementById("disconnect-btn");
     const sendButton = messageForm.querySelector('button[type="submit"]');
     const usernameDisplay = document.getElementById("username-display");
     const disconnectedText = document.getElementById("disconnected-text");
     const powerButton = document.getElementById("power-button");
+    const reconnectText = document.getElementById("reconnect-text");
 
     let typingTimer;
     const doneTypingInterval = 1000;
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sendButton.disabled = disable;
         nicknameInput.disabled = disable;
         changeUserBtn.disabled = disable;
+        disconnectBtn.disabled = disable;
     }
 
     socket.on("connect", () => {
@@ -76,11 +79,15 @@ document.addEventListener("DOMContentLoaded", () => {
             cipherStatus.classList.add("status-online");
             disconnectedText.style.display = "none";
             powerButton.style.display = "none";
+            reconnectText.style.display = "none";
+            disconnectBtn.textContent = "Disconnect";
         } else {
             cipherStatus.classList.remove("status-online");
             cipherStatus.classList.add("status-offline");
             disconnectedText.style.display = "inline";
             powerButton.style.display = "inline-block";
+            reconnectText.style.display = "inline";
+            disconnectBtn.textContent = "Connect";
         }
     }
 
@@ -146,6 +153,14 @@ document.addEventListener("DOMContentLoaded", () => {
     powerButton.addEventListener("click", () => {
         updateCipherStatus(true);
         socket.emit("request_cipher_greeting");
+    });
+
+    disconnectBtn.addEventListener("click", () => {
+        const isOnline = cipherStatus.classList.contains("status-online");
+        updateCipherStatus(!isOnline);
+        if (!isOnline) {
+            socket.emit("request_cipher_greeting");
+        }
     });
 
     function toggleFullScreen() {
