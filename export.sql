@@ -1,0 +1,7 @@
+CREATE TABLE chat_log (
+    id INT NOT NULL AUTO_INCREMENT,
+    nickname VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
