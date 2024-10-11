@@ -198,13 +198,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function restartChat() {
         chatMessages.innerHTML = "";
-        unlockUsername();
-        nicknameInput.value = "";
         messageInput.innerHTML = "";
         updateCipherStatus(false);
         handleInitialDelay();
-        isUsernameLocked = false;
-        changeUserBtn.classList.add("hidden");
     }
 
     socket.on("restart_chat", () => {

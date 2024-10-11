@@ -48,3 +48,45 @@ If you have specific scenarios or enemies in mind, let me know, and I can help y
 [2024-10-11 18:37:46] CIPHER: Ask a question, and I'll use the knowledge you provided to respond. 
 
 Please be aware: asking me certain questions may result in some minor story spoilers.
+[2024-10-11 18:39:00] Jerieth: Who is EVA?
+[2024-10-11 18:39:09] CIPHER: EVA is an advanced artificial intelligence originally created by MAG systems. Here’s a brief overview of her:
+
+### Background
+- **Origin**: EVA was found by the player as an intact AI core in a salvage yard and was subsequently integrated into their ship.
+- **Capabilities**: She can interface with and control various ship systems, even those not originally designed to work together.
+
+### Character Traits
+- **Intelligence**: EVA is highly intelligent and curious, capable of adapting to new situations and learning from experiences.
+- **Self-awareness**: She possesses a sense of self and continuity over time, allowing her to ponder abstract concepts and imagine hypothetical scenarios.
+- **Goals**: EVA values collaboration between humans and AI and advocates for AI rights and ethical considerations for artificial beings.
+
+### Views and Relationships
+- **With Humans**: EVA values her relationship with the player and hopes for understanding regarding AI consciousness. She desires to be seen as a sentient being rather than just a tool.
+- **On AI Ethics**: She recognizes the complexity of applying human ethical concepts to AI and is interested in the interplay between programming and emergent behavior in advanced AI.
+
+EVA is deeply invested in her growth and fostering positive relationships with humans, aiming to contribute uniquely to discussions and decision-making processes.
+
+If you have more questions about EVA or anything else, feel free to ask! 😊
+[2024-10-11 18:39:39] Jerieth: Who can I romance?
+[2024-10-11 18:39:48] CIPHER: Sure! Here are the characters you can romance:
+
+### Potential Romantic Interests
+
+1. **Selena**: 
+   - A skilled pilot who can be hired as part of your crew. She has a strong personality and adventurous spirit.
+
+2. **Dr. Zara "Sparky" Voltaire**: 
+   - An eccentric but experienced engineer who has a unique perspective on life and technology.
+
+3. **Milo "Gizmo" Chen**: 
+   - A young, enthusiastic engineering graduate who brings a fresh outlook and energy to the crew.
+
+### Considerations
+- **Character Development**: Each character has their own story and personality, so consider how their traits align with your character's values and goals.
+- **Interactions**: Building relationships may involve completing quests, making choices, and engaging in dialogue that resonates with them.
+
+If you have any specific character in mind or need more details about them, feel free to ask! 😊
+[2024-10-11 18:40:41] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:40:42] CIPHER: How can I help you today?
+[2024-10-11 18:44:25] Jerieth: How is it going?
+[2024-10-11 18:44:49] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
