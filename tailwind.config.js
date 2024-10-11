@@ -11,6 +11,7 @@ module.exports = {
         'green-500': '#4CAF50',
         'star-white': '#FFFFFF',
         'chat-bg': '#F0F0F0',
+        'blue-500': '#3b82f6',
       },
       fontFamily: {
         'orbitron': ['Orbitron', 'sans-serif'],
