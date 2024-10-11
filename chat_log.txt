@@ -103,3 +103,37 @@ If you have any specific questions or need assistance with something, feel free 
 [2024-10-11 18:47:37] CIPHER: How can I help you today?
 [2024-10-11 18:47:40] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
 [2024-10-11 18:47:41] CIPHER: How can I help you today?
+[2024-10-11 18:54:46] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:54:47] CIPHER: How can I help you today?
+[2024-10-11 18:54:54] Jerieth: Can you give me some tips?
+[2024-10-11 18:55:03] CIPHER: Absolutely! Here are some tips to enhance your gameplay experience:
+
+### Tips for Success
+
+1. **Manage Your Ship's Power**:
+   - Balance power between systems (weapons, engines, sensors) based on your current needs. For example, divert power to engines during a chase or to weapons during combat.
+
+2. **Upgrade Strategically**:
+   - Focus on upgrading critical systems first, like shields and weapons, to improve your ship's overall performance in battles.
+
+3. **Explore Different Missions**:
+   - Engage in various mission types (combat, exploration, diplomacy) to gain experience and resources. This will also help you build relationships with different factions.
+
+4. **Pay Attention to Relationships**:
+   - Your interactions with crew members and factions can affect your story. Make choices that align with your character's values to foster positive relationships.
+
+5. **Utilize Checkpoints**:
+   - Take advantage of the checkpoint system to save your progress frequently, especially before major decisions or battles.
+
+6. **Stay Aware of Random Events**:
+   - Be prepared for unexpected events during space travel. Adapt your strategy based on the situation to maximize your chances of success.
+
+If you have any specific areas you want tips on, just let me know! 😊
+[2024-10-11 18:55:06] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:55:06] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:55:06] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:55:07] CIPHER: Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).
+[2024-10-11 18:55:07] CIPHER: How can I help you today?
+[2024-10-11 18:55:07] CIPHER: How can I help you today?
+[2024-10-11 18:55:07] CIPHER: How can I help you today?
+[2024-10-11 18:55:08] CIPHER: How can I help you today?

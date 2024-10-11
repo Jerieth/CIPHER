@@ -198,8 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function restartChat() {
         chatMessages.innerHTML = "";
-        messageInput.innerHTML = "";
-        socket.emit("request_cipher_greeting");
     }
 
     socket.on("restart_chat", () => {
