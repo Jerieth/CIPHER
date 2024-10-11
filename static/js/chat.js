@@ -198,6 +198,13 @@ document.addEventListener("DOMContentLoaded", () => {
         handleInitialDelay();
         isUsernameLocked = false;
         changeUserBtn.classList.add("hidden");
+        
+        typingTimer = null;
+        inactivityTimer = null;
+        
+        socket.emit("clear_chat_history");
+        
+        socket.emit("request_cipher_greeting");
     }
 
     socket.on("restart_chat", () => {
