@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,47 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIPHER Chat</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        #chat-messages {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
-            background-color: white;
-        }
-        #message-form {
-            display: flex;
-            gap: 10px;
-        }
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 5px;
-        }
-        button {
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
 </head>
-<body>
-    <h1>CIPHER Chat</h1>
-    <div id="chat-messages"></div>
-    <form id="message-form">
-        <input type="text" id="nickname-input" placeholder="Your nickname" required>
-        <input type="text" id="message-input" placeholder="Type your message" required>
-        <button type="submit">Send</button>
-    </form>
+<body class="bg-deep-space text-star-white font-orbitron">
+    <div class="container mx-auto p-4 flex flex-col h-screen">
+        <h1 class="text-4xl mb-4 text-center text-neon-cyan">CIPHER Chat</h1>
+        <div id="chat-messages" class="flex-grow overflow-y-auto mb-4 p-4 bg-black bg-opacity-75 rounded-lg"></div>
+        <form id="message-form" class="flex gap-2 mb-4">
+            <input type="text" id="nickname-input" placeholder="Your nickname" required class="flex-grow p-2 rounded bg-cosmic-blue text-star-white placeholder-star-white placeholder-opacity-50">
+            <input type="text" id="message-input" placeholder="Type your message" required class="flex-grow p-2 rounded bg-cosmic-blue text-star-white placeholder-star-white placeholder-opacity-50">
+            <button type="submit" class="px-4 py-2 bg-neon-pink text-star-white rounded hover:bg-opacity-80 transition-colors">Send</button>
+        </form>
+        <div class="flex justify-between">
+            <button id="restart-chat-btn" class="px-4 py-2 bg-neon-cyan text-deep-space rounded hover:bg-opacity-80 transition-colors">Restart Chat</button>
+            <button id="full-screen-btn" class="px-4 py-2 bg-green-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Full Screen</button>
+            <button id="change-user-btn" class="px-4 py-2 bg-blue-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Change User</button>
+            <button id="disconnect-btn" class="px-4 py-2 bg-red-500 text-deep-space rounded hover:bg-opacity-80 transition-colors">Disconnect</button>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
 </html>
