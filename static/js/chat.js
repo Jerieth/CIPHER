@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCipherStatus(false);
         disableUserInput(true);
 
+        // Hide Power button and 'Click to Reconnect' text
+        powerButton.style.display = "none";
+        reconnectText.style.display = "none";
+
         const offlineMessage = document.createElement("div");
         offlineMessage.id = "cipher-offline-message";
         offlineMessage.textContent = "CIPHER powering on. Please Stand By.";
