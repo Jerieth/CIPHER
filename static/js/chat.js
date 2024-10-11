@@ -9,8 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const changeUserBtn = document.getElementById("change-user-btn");
     const restartChatBtn = document.getElementById("restart-chat-btn");
     const fullScreenBtn = document.getElementById("full-screen-btn");
+    const disconnectBtn = document.getElementById("disconnect-btn");
     const sendButton = messageForm.querySelector('button[type="submit"]');
     const usernameDisplay = document.getElementById("username-display");
+    const disconnectedText = document.getElementById("disconnected-text");
+    const powerButton = document.getElementById("power-button");
+    const reconnectText = document.getElementById("reconnect-text");
 
     let typingTimer;
     const doneTypingInterval = 1000;
@@ -23,33 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCipherStatus(false);
         disableUserInput(true);
 
-        const offlineMessage = document.createElement("div");
-        offlineMessage.id = "cipher-offline-message";
-        offlineMessage.textContent = "CIPHER powering on. Please Stand By.";
-        offlineMessage.className =
-            "text-red-500 text-center my-4 text-6xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10";
-        chatMessages.appendChild(offlineMessage);
+        displayOfflineMessage("CIPHER powering on. Please Stand By.");
 
         setTimeout(() => {
             updateCipherStatus(true);
-            const offlineMsg = document.getElementById(
-                "cipher-offline-message"
-            );
-            if (offlineMsg) offlineMsg.remove();
+            removeOfflineMessage();
 
-            const warningMessage = document.createElement("div");
-            warningMessage.id = "cipher-warning-message";
-            warningMessage.innerHTML =
-                "Ask a question, and I'll use the knowledge you provided to respond.<br><br>Please be aware: asking me certain questions may result in some minor story spoilers.";
-            warningMessage.className =
-                "text-red-500 text-center my-4 text-2xl font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10";
-            chatMessages.appendChild(warningMessage);
+            displayWarningMessage("Ask a question, and I'll use the knowledge you provided to respond.<br><br>Please be aware: asking me certain questions may result in some minor story spoilers.");
 
             setTimeout(() => {
-                const warningMsg = document.getElementById(
-                    "cipher-warning-message"
-                );
-                if (warningMsg) warningMsg.remove();
+                removeWarningMessage();
                 disableUserInput(false);
                 socket.emit("request_cipher_greeting");
             }, 10000);
@@ -61,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sendButton.disabled = disable;
         nicknameInput.disabled = disable;
         changeUserBtn.disabled = disable;
+        disconnectBtn.disabled = disable;
     }
 
     socket.on("connect", () => {
@@ -72,10 +60,52 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isOnline) {
             cipherStatus.classList.remove("status-offline");
             cipherStatus.classList.add("status-online");
+            disconnectedText.style.display = "none";
+            removeOfflineMessage();
+            powerButton.style.display = "none";
+            reconnectText.style.display = "none";
+            disconnectBtn.textContent = "Disconnect";
         } else {
             cipherStatus.classList.remove("status-online");
             cipherStatus.classList.add("status-offline");
+            disconnectedText.style.display = "inline";
+            powerButton.style.display = "inline-block";
+            reconnectText.style.display = "inline";
+            disconnectBtn.textContent = "Connect";
         }
+    }
+
+    function displayOfflineMessage(message) {
+        removeOfflineMessage(); // Remove any existing offline message
+        powerButton.style.display = "none";
+        reconnectText.style.display = "none";
+        const offlineMessage = document.createElement("div");
+        offlineMessage.id = "cipher-offline-message";
+        offlineMessage.innerHTML = message;
+        offlineMessage.className =
+            "text-red-500 text-center my-4 text-2xl font-bold p-4 bg-black bg-opacity-80 rounded-lg shadow-lg";
+        chatMessages.appendChild(offlineMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeOfflineMessage() {
+        const offlineMsg = document.getElementById("cipher-offline-message");
+        if (offlineMsg) offlineMsg.remove();
+    }
+
+    function displayWarningMessage(message) {
+        const warningMessage = document.createElement("div");
+        warningMessage.id = "cipher-warning-message";
+        warningMessage.innerHTML = message;
+        warningMessage.className =
+            "text-red-500 text-center my-4 text-xl font-bold p-4 bg-black bg-opacity-80 rounded-lg shadow-lg";
+        chatMessages.appendChild(warningMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeWarningMessage() {
+        const warningMsg = document.getElementById("cipher-warning-message");
+        if (warningMsg) warningMsg.remove();
     }
 
     function resetInactivityTimer() {
@@ -92,6 +122,12 @@ document.addEventListener("DOMContentLoaded", () => {
         nicknameInput.classList.add("hidden");
         changeUserBtn.textContent = "Change User";
         changeUserBtn.classList.remove("hidden");
+        typingTimer = null;
+        inactivityTimer = null;
+
+        socket.emit("clear_chat_history");
+
+        socket.emit("request_cipher_greeting");
     }
 
     function unlockUsername() {
@@ -131,10 +167,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     restartChatBtn.addEventListener("click", () => {
         socket.emit("restart_chat");
+        restartChat();
     });
 
     fullScreenBtn.addEventListener("click", () => {
         toggleFullScreen();
+    });
+    powerButton.addEventListener("click", () => {
+        updateCipherStatus(true);
+        socket.emit("request_cipher_greeting");
+    });
+
+    disconnectBtn.addEventListener("click", () => {
+        const isOnline = cipherStatus.classList.contains("status-online");
+        updateCipherStatus(!isOnline);
+        if (!isOnline) {
+            socket.emit("request_cipher_greeting");
+        }
     });
 
     function toggleFullScreen() {
@@ -159,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    socket.on("restart_chat", () => {
+    function restartChat() {
         chatMessages.innerHTML = "";
         unlockUsername();
         nicknameInput.value = "";
@@ -168,6 +217,9 @@ document.addEventListener("DOMContentLoaded", () => {
         handleInitialDelay();
         isUsernameLocked = false;
         changeUserBtn.classList.add("hidden");
+    }
+    socket.on("restart_chat", () => {
+        restartChat();
     });
 
     socket.on("receive_message", (data) => {
@@ -184,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         messageElement.className =
             "message mb-4 p-4 bg-chat-bg rounded-lg shadow-md";
-        
+
         if (data.nickname === "CIPHER") {
             messageElement.classList.add("cipher-message");
         } else {
@@ -201,17 +253,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function formatMessage(message) {
-        // Convert markdown-style formatting to HTML
         message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         message = message.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
-        // Convert bullet points
+
         message = message.replace(/^- (.*?)$/gm, '<li>$1</li>');
         message = message.replace(/<li>.*?<\/li>/gs, '<ul>$&</ul>');
-        
-        // Preserve line breaks
+
         message = message.replace(/\n/g, '<br>');
-        
+
         return message;
     }
 
@@ -231,6 +280,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Initialize inactivity timer
     resetInactivityTimer();
 });

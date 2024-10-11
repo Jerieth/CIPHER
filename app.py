@@ -11,7 +11,7 @@ socketio = SocketIO(app)
 
 who_are_you_count = 0
 greeting_sent = False
-
+chat_history = []  # Add this line to store chat history
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -24,6 +24,7 @@ def handle_connect():
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
+    chat_history.append({'message': message, 'nickname': nickname})  # Add this line
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
     
     # Delayed CIPHER response
@@ -31,12 +32,17 @@ def handle_message(data):
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
-    global who_are_you_count, greeting_sent
+    global who_are_you_count, greeting_sent, chat_history
     who_are_you_count = 0
     greeting_sent = False
+    chat_history = []  # Clear chat history
     emit('restart_chat', broadcast=True)
     socketio.sleep(1)  # Short delay to ensure client-side is ready
     send_cipher_greeting()
+    @socketio.on('clear_chat_history')
+    def handle_clear_chat_history():
+        global chat_history
+        chat_history = []  # Clear chat history
 
 @socketio.on('request_cipher_greeting')
 def handle_request_cipher_greeting():

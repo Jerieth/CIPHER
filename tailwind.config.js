@@ -8,6 +8,7 @@ module.exports = {
         'cosmic-blue': '#3A4A9E',
         'neon-cyan': '#08F7FE',
         'neon-pink': '#FF2A6D',
+        'green-500': '#4CAF50',
         'star-white': '#FFFFFF',
         'chat-bg': '#F0F0F0',
       },
