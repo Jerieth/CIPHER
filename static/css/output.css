@@ -739,6 +739,11 @@ video {
   border-color: rgb(255 42 109 / var(--tw-border-opacity));
 }
 
+.bg-\[\#0d47a1\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 71 161 / var(--tw-bg-opacity));
+}
+
 .bg-chat-bg {
   --tw-bg-opacity: 1;
   background-color: rgb(240 240 240 / var(--tw-bg-opacity));
