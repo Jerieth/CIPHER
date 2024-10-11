@@ -1,0 +1,56 @@
+Checkpoint created on: October 11, 2024
+
+Files included in this checkpoint:
+
+1. app.py
+2. static/js/chat.js
+3. templates/index.html
+4. static/css/input.css
+5. static/css/output.css
+6. main.py
+7. package.json
+8. tailwind.config.js
+
+Contents of each file:
+
+1. app.py:
+```python
+{app.py contents}
+```
+
+2. static/js/chat.js:
+```javascript
+{static/js/chat.js contents}
+```
+
+3. templates/index.html:
+```html
+{templates/index.html contents}
+```
+
+4. static/css/input.css:
+```css
+{static/css/input.css contents}
+```
+
+5. static/css/output.css:
+```css
+{static/css/output.css contents}
+```
+
+6. main.py:
+```python
+{main.py contents}
+```
+
+7. package.json:
+```json
+{package.json contents}
+```
+
+8. tailwind.config.js:
+```javascript
+{tailwind.config.js contents}
+```
+
+End of checkpoint
