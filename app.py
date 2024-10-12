@@ -7,6 +7,8 @@ from flask_socketio import SocketIO, emit
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_socketio import SocketIO
+import eventlet
 
 
 app = Flask(__name__)
@@ -142,5 +144,9 @@ def export_schema():
 def export_schema_route():
     return export_schema(), 200, {'Content-Type': 'text/plain'}
 
+eventlet.monkey_patch()
+
+app = Flask(__name__)
+socketio = SocketIO(app, async_mode='eventlet')
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
