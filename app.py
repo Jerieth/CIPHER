@@ -1,32 +1,30 @@
 import os
 import time
 import random
+import logging
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-import os
-import logging
-
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Add these lines just before db.create_all()
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+socketio = SocketIO(app)
+
 logger.debug(f"Current user: {os.getuid()}")
 logger.debug(f"Current working directory: {os.getcwd()}")
 logger.debug(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 logger.debug(f"Database file exists: {os.path.exists('/home/ec2-user/CIPHER/cypher.db')}")
 logger.debug(f"Database file permissions: {oct(os.stat('/home/ec2-user/CIPHER/cypher.db').st_mode)[-3:]}")
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or "sqlite:///cypher.db"
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-socketio = SocketIO(app)
 
 class ChatLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
