@@ -7,25 +7,23 @@ from flask_socketio import SocketIO, emit
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_socketio import SocketIO
 import eventlet
 
+eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 db_path = os.path.join(os.getcwd(), 'cypher.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cypher.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
-socketio = SocketIO(app, cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://3.81.104.212:5000"])
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://3.81.104.212:5000"])
 
 class ChatLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
     def __repr__(self):
         return f'<ChatLog {self.nickname}: {self.message}>'
 
@@ -53,15 +51,11 @@ def handle_connect():
 def handle_message(data):
     message = data['message']
     nickname = data['nickname']
-    
     chat_log = ChatLog(nickname=nickname, message=message)
     db.session.add(chat_log)
     db.session.commit()
-    
     log_to_file(nickname, message)
-    
     emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
-    
     socketio.start_background_task(send_cipher_response, nickname, message)
 
 @socketio.on('restart_chat')
@@ -81,7 +75,6 @@ def send_cipher_greeting():
     if not greeting_sent:
         greeting1 = 'Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).'
         greeting2 = 'How can I help you today?'
-        
         emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
         log_to_file('CIPHER', greeting1)
         socketio.sleep(1)
@@ -93,15 +86,11 @@ def send_cipher_response(user_name, user_message):
     with app.app_context():
         socketio.emit('user_typing', {'nickname': 'CIPHER'})
         time.sleep(random.uniform(1, 3))
-        
         cipher_message = get_voiceflow_response(user_message)
-        
         chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
         db.session.add(chat_log)
         db.session.commit()
-        
         log_to_file('CIPHER', cipher_message)
-        
         socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
         socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
 
@@ -117,16 +106,13 @@ def get_voiceflow_response(user_message):
             "payload": user_message
         }
     }
-    
     try:
         response = requests.post(voiceflow_api_url, json=payload, headers=headers)
         response.raise_for_status()
         data = response.json()
-        
         for trace in data:
             if trace['type'] == 'speak' or trace['type'] == 'text':
                 return trace['payload']['message']
-        
         return ""
     except requests.RequestException as e:
         print(f"Error calling Voiceflow API: {e}")
@@ -144,9 +130,6 @@ def export_schema():
 def export_schema_route():
     return export_schema(), 200, {'Content-Type': 'text/plain'}
 
-eventlet.monkey_patch()
-
-app = Flask(__name__)
-socketio = SocketIO(app, async_mode='eventlet')
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
+    
