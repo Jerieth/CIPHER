@@ -10,14 +10,16 @@ from flask_socketio import SocketIO, emit
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 db_path = os.path.join(os.getcwd(), 'cypher.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cypher.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["*"])
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://cipher.sctds.com""])
 
 # Define route for '/index.html'
 @app.route('/')
