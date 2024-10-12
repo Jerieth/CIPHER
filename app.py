@@ -4,9 +4,10 @@ eventlet.monkey_patch()
 import os
 import time
 import random
+import uuid
 import logging
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+from flask import Flask, current_app render_template, session
+from flask_socketio import SocketIO, emit, join_room
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -24,6 +25,8 @@ socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec
 # Define route for '/index.html'
 @app.route('/')
 def index():
+    if 'session_id' not in session:
+        session['session_id'] = str(uuid.uuid4())  # Assign a unique session ID
     return render_template('index.html')
 
 class ChatLog(db.Model):
@@ -47,7 +50,9 @@ def log_to_file(nickname, message):
         log_file.write(log_entry)
 
 @socketio.on('connect')
-def handle_connect():
+def handle_connect(auth):
+    if 'session_id' in session:
+        join_room(session['session_id'])
     pass
 
 @socketio.on('send_message')
@@ -58,8 +63,16 @@ def handle_message(data):
     db.session.add(chat_log)
     db.session.commit()
     log_to_file(nickname, message)
-    emit('receive_message', {'message': message, 'nickname': nickname}, broadcast=True)
-    socketio.start_background_task(send_cipher_response, nickname, message)
+    session_id = session.get('session_id')
+    if session_id:
+        emit('receive_message', {
+            'message': message,
+            'nickname': nickname
+        },
+             room=session_id)
+
+    socketio.start_background_task(send_cipher_response, nickname, message,
+                                   session_id)
 
 @socketio.on('restart_chat')
 def handle_restart_chat():
@@ -76,26 +89,40 @@ def handle_request_cipher_greeting():
 def send_cipher_greeting():
     global greeting_sent
     if not greeting_sent:
-        greeting1 = 'Hello, I am CIPHER (Cognitive Interface for Personal Help and Extended Resources).'
+        greeting1 = 'Hello, I am CIPHER (Cognitive Intelligence Protocol for Human Engagement and Response).'
         greeting2 = 'How can I help you today?'
-        emit('receive_message', {'message': greeting1, 'nickname': 'CIPHER'}, broadcast=True)
+
+        emit('receive_message', {
+            'message': greeting1,
+            'nickname': 'CIPHER'
+        },
+             broadcast=True)
         log_to_file('CIPHER', greeting1)
         socketio.sleep(1)
-        emit('receive_message', {'message': greeting2, 'nickname': 'CIPHER'}, broadcast=True)
+        emit('receive_message', {
+            'message': greeting2,
+            'nickname': 'CIPHER'
+        },
+             broadcast=True)
         log_to_file('CIPHER', greeting2)
         greeting_sent = True
 
-def send_cipher_response(user_name, user_message):
+def send_cipher_response(user_name, user_message, session_id):
     with app.app_context():
-        socketio.emit('user_typing', {'nickname': 'CIPHER'})
+        socketio.emit('user_typing', {'nickname': 'CIPHER'}, room=session_id))
         time.sleep(random.uniform(1, 3))
         cipher_message = get_voiceflow_response(user_message)
         chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
         db.session.add(chat_log)
         db.session.commit()
         log_to_file('CIPHER', cipher_message)
-        socketio.emit('user_stop_typing', {'nickname': 'CIPHER'})
-        socketio.emit('receive_message', {'message': cipher_message, 'nickname': 'CIPHER'})
+        socketio.emit('user_stop_typing', {'nickname': 'CIPHER'},
+                      room=session_id)
+        socketio.emit('receive_message', {
+            'message': cipher_message,
+            'nickname': 'CIPHER'
+        },
+                      room=session_id)
 
 def get_voiceflow_response(user_message):
     voiceflow_api_url = "https://general-runtime.voiceflow.com/state/user/123/interact"
