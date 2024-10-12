@@ -7,8 +7,18 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+import os
 import logging
+
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Add these lines just before db.create_all()
+logger.debug(f"Current user: {os.getuid()}")
+logger.debug(f"Current working directory: {os.getcwd()}")
+logger.debug(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+logger.debug(f"Database file exists: {os.path.exists('/home/ec2-user/CIPHER/cypher.db')}")
+logger.debug(f"Database file permissions: {oct(os.stat('/home/ec2-user/CIPHER/cypher.db').st_mode)[-3:]}")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL") or "sqlite:///cypher.db"
