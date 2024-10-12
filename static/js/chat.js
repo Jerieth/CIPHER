@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cipherStatus = document.getElementById("cipher-status");
     const changeUserBtn = document.getElementById("change-user-btn");
     const restartChatBtn = document.getElementById("restart-chat-btn");
+    restartChatBtn.style.display = "none"; // Hide the button by default
     const fullScreenBtn = document.getElementById("full-screen-btn");
     const disconnectBtn = document.getElementById("disconnect-btn");
     const sendButton = messageForm.querySelector('button[type="submit"]');
