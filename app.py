@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 import os
 import time
 import random
@@ -7,9 +9,6 @@ from flask_socketio import SocketIO, emit
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import eventlet
-
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
