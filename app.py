@@ -1,5 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
+
 import os
 import time
 import random
@@ -18,10 +19,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://3.81.104.212:5000"])
 
-# Place the route definition here
+# Define route for '/'
 @app.route('/')
-def index():
+def home():
     return "Hello, world!"
+
+# Define route for '/index.html'
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
 
 class ChatLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,10 +48,6 @@ def log_to_file(nickname, message):
     log_entry = f"[{timestamp}] {nickname}: {message}\n"
     with open("chat_log.txt", "a") as log_file:
         log_file.write(log_entry)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @socketio.on('connect')
 def handle_connect():
@@ -136,4 +138,3 @@ def export_schema_route():
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000)
-    
