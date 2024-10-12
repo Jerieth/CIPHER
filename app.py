@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+db_path = os.path.join(os.getcwd(), 'cypher.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cypher.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -24,7 +25,8 @@ logger.debug(f"Current working directory: {os.getcwd()}")
 logger.debug(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 logger.debug(f"Database file exists: {os.path.exists('/home/ec2-user/CIPHER/cypher.db')}")
 logger.debug(f"Database file permissions: {oct(os.stat('/home/ec2-user/CIPHER/cypher.db').st_mode)[-3:]}")
-
+logger.debug(f"Absolute database path: {db_path}")
+logger.debug(f"Database directory writable: {os.access(os.path.dirname(db_path), os.W_OK)}")
 
 class ChatLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
