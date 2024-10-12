@@ -17,7 +17,7 @@ db_path = os.path.join(os.getcwd(), 'cypher.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cypher.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://3.81.104.212:5000"])
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["*"])
 
 # Define route for '/index.html'
 @app.route('/')
