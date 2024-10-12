@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const socket = io('ws://cipher.sctds.com');
+    const socket = io('http://cipher.sctds.com');
     const chatMessages = document.getElementById("chat-messages");
     const messageForm = document.getElementById("message-form");
     const messageInput = document.getElementById("message-input");
