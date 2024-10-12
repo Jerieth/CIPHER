@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins=["http://ec2-3-81-104-212.compute-1.amazonaws.com:5000", "http://3.81.104.212:5000"])
 
 # Define route for '/index.html'
-@app.route('/index.html')
+@app.route('/')
 def index():
     return render_template('index.html')
 
