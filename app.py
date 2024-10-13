@@ -6,7 +6,7 @@ import time
 import random
 import uuid
 import logging
-from flask import Flask, current_app render_template, session
+from flask import Flask, current_app, render_template, session
 from flask_socketio import SocketIO, emit, join_room
 import requests
 from flask_sqlalchemy import SQLAlchemy
