@@ -109,7 +109,7 @@ def send_cipher_greeting():
 
 def send_cipher_response(user_name, user_message, session_id):
     with app.app_context():
-        socketio.emit('user_typing', {'nickname': 'CIPHER'}, room=session_id))
+        socketio.emit('user_typing', {'nickname': 'CIPHER'}, room=session_id)
         time.sleep(random.uniform(1, 3))
         cipher_message = get_voiceflow_response(user_message)
         chat_log = ChatLog(nickname='CIPHER', message=cipher_message)
