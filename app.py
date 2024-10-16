@@ -12,6 +12,7 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
+from app import db
 
 app = Flask(__name__)
 CORS(app)
