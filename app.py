@@ -12,7 +12,15 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
-import CIPHER import db
+import mysql.connecto
+import db
+# Establish a connection to the database
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="Jerieth",
+  password="G^EVA1b89lg-c5",
+  database="cipher_mysql"
+)
 
 app = Flask(__name__)
 CORS(app)
