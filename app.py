@@ -1,6 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
-
+from wsgi import app as application
 import os
 import time
 import random
