@@ -13,14 +13,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 
-# Establish a connection to the database
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="Jerieth",
-  password="G^EVA1b89lg-c5",
-  database="cipher_mysql"
-)
-
 app = Flask(__name__)
 CORS(app)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
