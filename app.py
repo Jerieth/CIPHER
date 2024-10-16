@@ -12,7 +12,7 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
-import mysql.connecto
+import mysql.connector
 import db
 # Establish a connection to the database
 mydb = mysql.connector.connect(
